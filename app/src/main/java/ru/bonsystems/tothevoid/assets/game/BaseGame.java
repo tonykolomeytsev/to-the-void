@@ -69,14 +69,14 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
 
 
         playerControlArea = new Control() {@Override public void update(float delta) {}};
-        playerControlArea.setArea(new Control.Area(Config.rndWidth / 2f, 100f, Config.rndWidth / 2f, Config.rndHeight - 100f));
+        playerControlArea.setArea(new Control.Area(Config.RENDER_WIDTH / 2f, 100f, Config.RENDER_WIDTH / 2f, Config.RENDER_HEIGHT - 100f));
         playerControlArea.addOnTouchListener(playerControlProcessor = new PlayerControl());
         uiModel.addControl(playerControlArea);
 
         asteroids = new Asteroid[7];
         for (int i = 0; i < asteroids.length; i++) {
             asteroids[i] = new Asteroid();
-            asteroids[i].setX(Config.rndWidth * 2f);
+            asteroids[i].setX(Config.RENDER_WIDTH * 2f);
         }
         collider = new Collider(new Runnable() {
             @Override
@@ -290,7 +290,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         public void update(float delta) {
             player.setAcceleration(-ay / 50f);
 
-            float newPosX = Config.rndWidth / 4f;
+            float newPosX = Config.RENDER_WIDTH / 4f;
             float newPosY = player.getY() - ay * delta;
             if (newPosY < 0) newPosX = 0;
             if (newPosY > Camera.getInstance().getAreaHeight()) newPosY = Camera.getInstance().getAreaHeight();
@@ -329,7 +329,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         @Override
         public void init() {
             texture = loadTextureFromAssets("pause_menu/icon_pause.png");
-            x = Config.rndWidth - texture.getWidth() - 20f;
+            x = Config.RENDER_WIDTH - texture.getWidth() - 20f;
             y = 40f;
             area = new Area(x, y, texture.getWidth(), texture.getHeight());
         }

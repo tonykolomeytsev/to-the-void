@@ -58,8 +58,8 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
                     transform.postScale(scale, scale);
                 }
                 transform.postTranslate(
-                        Config.rndWidth / 2 - texture.getWidth() * scale / 2,
-                        Config.rndHeight / 2 - texture.getHeight() * scale / 2 - 50f
+                        Config.RENDER_WIDTH / 2 - texture.getWidth() * scale / 2,
+                        Config.RENDER_HEIGHT / 2 - texture.getHeight() * scale / 2 - 50f
                 );
             }
 
@@ -82,7 +82,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
                 transform = new Matrix();
                 float startButtonY = 720f / 4f * 3f;
                 transform.setTranslate(
-                        Config.rndWidth / 2 - texture.getWidth() / 2,
+                        Config.RENDER_WIDTH / 2 - texture.getWidth() / 2,
                         startButtonY + (texture.getHeight() / 2f)
                 );
             }
@@ -258,8 +258,8 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
         @Override
         public void init() {
             renderRadius = 40f;
-            renderCenterX = Config.rndWidth - renderRadius - 30f;
-            renderCenterY = Config.rndHeight - renderRadius - 20f;
+            renderCenterX = Config.RENDER_WIDTH - renderRadius - 30f;
+            renderCenterY = Config.RENDER_HEIGHT - renderRadius - 20f;
             radiusIncrement = 0f;
 
             texture = loadTextureFromAssets("start_menu/icon_settings.png");

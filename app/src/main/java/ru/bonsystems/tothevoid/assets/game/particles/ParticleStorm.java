@@ -28,8 +28,8 @@ public class ParticleStorm extends GameObject {
         particles = new Particle[30];
         for (int i = 0; i < particles.length; i++) {
             particles[i] = new Particle(
-                    Config.rndWidth,
-                    Config.rndHeight * random.nextFloat(),
+                    Config.RENDER_WIDTH,
+                    Config.RENDER_HEIGHT * random.nextFloat(),
                     50f,
                     1000f + random.nextFloat() * 300
             );
@@ -45,8 +45,8 @@ public class ParticleStorm extends GameObject {
         particleCount = (particleCount <= particles.length)? particleCount : particles.length;
         for (int i = 0; i < particleCount; i++) {
             if (!particles[i].isAlive()) particles[i] = new Particle(
-                    Config.rndWidth,
-                    Config.rndHeight * random.nextFloat(),
+                    Config.RENDER_WIDTH,
+                    Config.RENDER_HEIGHT * random.nextFloat(),
                     100f,
                     1500f + random.nextFloat() * 300f
             );

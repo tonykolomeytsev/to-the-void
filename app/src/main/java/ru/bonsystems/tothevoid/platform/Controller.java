@@ -1,11 +1,8 @@
 package ru.bonsystems.tothevoid.platform;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,23 +11,25 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+
+import java.util.Stack;
+
 import ru.bonsystems.tothevoid.R;
+import ru.bonsystems.tothevoid.platform.extend.uis.Control;
 
 /**
  * Created by Kolomeytsev Anton
  */
-public class Controller extends Application implements SurfaceHolder.Callback, Runnable, Application.ActivityLifecycleCallbacks {
+public class Controller extends Application implements SurfaceHolder.Callback, Runnable {
     private static Controller ourInstance; // = new Controller();
-    private Activity activity;
-    /**
-     * root - упрощенная замена модели приложения
-     * presenter - видимая графическая часть приложения
-     */
     private Root root;
     private SurfaceView presenter;
-
-    private boolean appIsActive;
-    private int framesPerSecond = 0;
+    private Thread performThread;
+    private boolean isRunning;
 
     public static Controller getInstance() {
         return ourInstance;
@@ -46,27 +45,15 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
     public void onCreate() {
         super.onCreate();
         ourInstance = this;
-
-        createScreenReceiver();
-    }
-
-    private void createScreenReceiver() {
-        screenReceiver = new ScreenReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(screenReceiver, intentFilter);
     }
 
     /**
      * Activity сообщает о своём появлении передавая ссылку на себя контроллеру
      * @param activity - ссылка на Activity
      */
-    public void onActivityCreate(Activity activity) {
-        this.activity = activity;
+    public void onActivityCreate(AppCompatActivity activity) {
         Config.setUpByActivity(activity);
-        activity.setContentView(R.layout.activity_main);
-        registerActivityLifecycleCallbacks(this);
+        activity.getLifecycle().addObserver(new GameLifecycleObserver());
 
         keepScreenOn(activity);
         ((MainActivity)activity).hideSystemUI();
@@ -80,10 +67,6 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
 
     private void keepScreenOn(Activity activity) {
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    public Activity getActivity() {
-        return activity;
     }
 
     public Root getRoot() {
@@ -105,10 +88,9 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
     }
 
     private void resume() {
-        Log.d("MiniPlatformState", "RESUME (appIsActive already " + appIsActive + " )");
-        if (!appIsActive) {
-            appIsActive = true;
-            Thread performThread = new Thread(this);
+        final boolean isApplicationAlreadyActive = performThread != null;
+        if (!isApplicationAlreadyActive && !isRunning) {
+            performThread = new Thread(this);
             performThread.setName("MiniPlatform MainLoop");
             performThread.setPriority(Thread.MAX_PRIORITY);
             performThread.start();
@@ -117,17 +99,20 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        System.out.println("SURFACE DESTROYED");
         pause();
     }
 
     private void pause() {
-        Log.d("MiniPlatformState", "PAUSE");
-        appIsActive = false;
+        final boolean isApplicationAlreadyActive = performThread != null;
         try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
+            if (isApplicationAlreadyActive && isRunning) {
+                isRunning = false;
+                performThread.join();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            performThread = null;
         }
     }
 
@@ -136,22 +121,19 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
      */
     @Override
     public void run() {
-        long DELAY = 1000 / Config.FPS;
         Canvas canvas;
         final SurfaceHolder surfaceHolder = presenter.getHolder();
         long startTime, elapsedTime = 0;
-        while (appIsActive) {
+        while (isRunning) {
             startTime = System.currentTimeMillis();
             canvas = null;
             try {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
-                    root.run(canvas, (elapsedTime < DELAY)?(DELAY / 1000f):(elapsedTime / 1000f));
+                    root.run(canvas, elapsedTime / 1000f);
                 }
                 elapsedTime = System.currentTimeMillis() - startTime;
-                framesPerSecond++;
             } catch (Exception e) {
-                System.out.println("ERROR: "+Thread.currentThread());
                 e.printStackTrace();
             } finally {
                 if (canvas != null) surfaceHolder.unlockCanvasAndPost(canvas);
@@ -159,85 +141,20 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
         }
     }
 
-    @Override
-    public void onActivityCreated(Activity activity, Bundle bundle) {
-        Log.d("MiniPlatform", "onActivityCreated");
-    }
+    static class GameLifecycleObserver implements LifecycleObserver {
 
-    @Override
-    public void onActivityStarted(Activity activity) {
-        Log.d("MiniPlatform", "onActivityStarted");
-        if (root.getScreenStack().size() > 0) root.getScreenStack().peek().onShow();
-        resume();
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-        Log.d("MiniPlatform", "onActivityResumed");
-        if (root.getScreenStack().size() > 0) root.getScreenStack().peek().onShow();
-        resume();
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-        Log.d("MiniPlatform", "onActivityPaused");
-        if (root.getScreenStack().size() > 0) root.getScreenStack().peek().onHide();
-        pause();
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-        Log.d("MiniPlatform", "onActivityStopped");
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-        Log.d("MiniPlatform", "onActivitySaveInstanceState");
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-        Log.d("MiniPlatform", "onActivityDestroyed");
-    }
-
-    private class FPSMeter implements Runnable{
-
-        @Override
-        public void run() {
-            while (appIsActive && Config.fpsTracking) {
-                try {
-                    System.out.println("FPS: " + framesPerSecond);
-                    framesPerSecond = 0;
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private ScreenReceiver screenReceiver;
-
-    public ScreenReceiver getScreenReceiver() {
-        return screenReceiver;
-    }
-
-    private class ScreenReceiver extends BroadcastReceiver {
-        private boolean screenEnabled = true;
-
-        public boolean isScreenEnabled() {
-            return screenEnabled;
+        private Stack<GameScreen> getScreenStack() {
+            return Controller.getInstance().root.getScreenStack();
         }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                System.out.println("Screen turned off");
-                screenEnabled = false;
-            } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                System.out.println("Screen turned on");
-                screenEnabled = true;
-            }
+        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        public void onResume() {
+            if (getScreenStack().size() > 1) getScreenStack().peek().onShow();
+        }
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        public void onPause() {
+            if (getScreenStack().size() > 1) getScreenStack().peek().onHide();
         }
     }
 }

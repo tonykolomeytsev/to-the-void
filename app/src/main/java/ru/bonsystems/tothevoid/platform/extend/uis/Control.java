@@ -43,12 +43,12 @@ public abstract class Control extends GameObject {
 
     @Override
     public void render(Canvas canvas) {
-        if (Config.debugMode) {
-            debugPaint.setStyle(Paint.Style.STROKE);
-            debugPaint.setStrokeWidth(2);
-            debugPaint.setColor(Color.YELLOW);
-            canvas.drawRect(area.x, area.y, area.x + area.width, area.y + area.height, debugPaint);
-        }
+//        if (Config.debugMode) {
+//            debugPaint.setStyle(Paint.Style.STROKE);
+//            debugPaint.setStrokeWidth(2);
+//            debugPaint.setColor(Color.YELLOW);
+//            canvas.drawRect(area.x, area.y, area.x + area.width, area.y + area.height, debugPaint);
+//        }
     }
 
     public void removeOnTouchListener(View.OnTouchListener listener) {

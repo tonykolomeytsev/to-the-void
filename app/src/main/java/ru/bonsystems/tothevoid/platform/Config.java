@@ -8,9 +8,10 @@ import android.graphics.Point;
  * Куча нужных всем статических значений, определяемых еще при загрузке приложения
  */
 public class Config {
+    public final static boolean debugMode = false;
     public static float scrWidth;
     public static float scrHeight;
-    public final static float RENDER_WIDTH = 720f;
+    public final static float RENDER_WIDTH = 1280f;
     public static float RENDER_HEIGHT;
     public static float scaleFactor;
 

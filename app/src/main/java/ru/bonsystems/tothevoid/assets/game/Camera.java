@@ -30,8 +30,8 @@ public class Camera extends GameObject{
 
     @Override
     public void update(float delta) {
-        float surfaceWidth = Config.rndWidth;
-        float surfaceHeight = Config.rndHeight;
+        float surfaceWidth = Config.RENDER_WIDTH;
+        float surfaceHeight = Config.RENDER_HEIGHT;
         expectedX = direction.getX() - surfaceWidth / 4f;
         expectedY = direction.getY() - surfaceHeight / 2f;
         if (expectedX < 0) expectedX = 0;

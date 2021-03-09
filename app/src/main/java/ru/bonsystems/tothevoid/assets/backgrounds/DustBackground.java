@@ -284,8 +284,8 @@ public class DustBackground extends GameObject {
             Random random = new Random();
             (paint = new Paint()).setColor(Color.WHITE);
             paint.setAntiAlias(true);
-            this.x = Config.rndWidth / 2; vx = ((random.nextFloat() * 2f) - 1f) * 2f;
-            this.y = Config.rndHeight / 2; vy = ((random.nextFloat() * 2f) - 1f) * 2f;
+            this.x = Config.RENDER_WIDTH / 2; vx = ((random.nextFloat() * 2f) - 1f) * 2f;
+            this.y = Config.RENDER_HEIGHT / 2; vy = ((random.nextFloat() * 2f) - 1f) * 2f;
             this.alpha = 0f;
             this.radius = 0f;
             this.radiusIncrement = random.nextFloat();
@@ -299,7 +299,7 @@ public class DustBackground extends GameObject {
             radius += radiusIncrement * delta * 0.2f;
             x += vx * delta * 5f; vx *= 1f + (delta * 0.3f);
             y += vy * delta * 5f; vy *= 1f + (delta * 0.3f);
-            if (x < 0 || x > Config.rndWidth || y < 0 || y > Config.rndHeight) alive = false;
+            if (x < 0 || x > Config.RENDER_WIDTH || y < 0 || y > Config.RENDER_HEIGHT) alive = false;
         }
 
         public boolean isAlive() {

@@ -32,12 +32,12 @@ public class ExplosionEffect extends GameObject {
     @Override
     public void render(Canvas canvas) {
         canvas.drawCircle(x, y, radius, ex_paint);
-        canvas.drawRect(0f, 0f, Config.rndWidth, Config.rndHeight, lt_paint);
+        canvas.drawRect(0f, 0f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT, lt_paint);
     }
 
     @Override
     public void update(float delta) {
-        if (radius < (Config.rndWidth * 4)) {
+        if (radius < (Config.RENDER_WIDTH * 4)) {
             radius *= 1.2f * 40f * delta;
             lt_alpha *= 0.99f * 30f * delta;
             //ex_alpha *= 0.99f * 30f * delta;

@@ -32,8 +32,8 @@ public class GameOverScreen extends GameScreen implements View.OnTouchListener {
 
     public GameOverScreen() {
         dustBackground = new DustBackground();
-        x = Config.rndWidth / 2f;
-        y = Config.rndHeight / 2f;
+        x = Config.RENDER_WIDTH / 2f;
+        y = Config.RENDER_HEIGHT / 2f;
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Pallete.ACCENT_LIGHT);
@@ -80,7 +80,7 @@ public class GameOverScreen extends GameScreen implements View.OnTouchListener {
 
     @Override
     public void render() {
-        canvas.drawRect(0f, 0f, Config.rndWidth, Config.rndHeight, darkPaint);
+        canvas.drawRect(0f, 0f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT, darkPaint);
         dustBackground.render(canvas);
         //canvas.drawCircle(x, y, Config.rndHeight * 0.3333f, paint);
 

@@ -16,7 +16,7 @@ public class Collider {
     private Runnable clashListener;
 
     public Collider(Runnable clashListener){
-        buffer_quarter_screen_width = (Config.rndWidth / 4f) + 100f;
+        buffer_quarter_screen_width = (Config.RENDER_WIDTH / 4f) + 100f;
         buffer_player_full_height = 32f;
         playerPoints = new Vector3f[3];
         this.clashListener = clashListener;

@@ -41,8 +41,8 @@ public class LoadingScreen extends GameScreen {
                 texture = loadTextureFromAssets("loading.png");
                 transform = new Matrix();
                 transform.setTranslate(
-                        Config.rndWidth / 2 - texture.getWidth() / 2,
-                        Config.rndHeight / 2 - texture.getHeight() / 2
+                        Config.RENDER_WIDTH / 2 - texture.getWidth() / 2,
+                        Config.RENDER_HEIGHT / 2 - texture.getHeight() / 2
                 );
             }
 
@@ -120,16 +120,16 @@ public class LoadingScreen extends GameScreen {
             (paint = new Paint()).setColor(sparksPallet[random.nextInt(sparksPallet.length)]);
             paint.setAntiAlias(true);
             this.radius = 0.1f + 5f * random.nextFloat();
-            this.x = Config.rndWidth * random.nextFloat();
-            this.y = Config.rndHeight * random.nextFloat();
+            this.x = Config.RENDER_WIDTH * random.nextFloat();
+            this.y = Config.RENDER_HEIGHT * random.nextFloat();
             vx = ((random.nextFloat() * 2f) - 1f) * 5f;
             vy = ((random.nextFloat() * 2f) - 1f) * 5f;
             this.alpha = 0.2f + (0.5f * random.nextFloat());
             alphaInc = 1f;
             alphaSpd = random.nextFloat() * 5f;
             r2 = len(0f, 0f,
-                    Config.rndHeight /*Я не ошибся, тут height*/ / 2f,
-                    Config.rndHeight / 2f
+                    Config.RENDER_HEIGHT /*Я не ошибся, тут height*/ / 2f,
+                    Config.RENDER_HEIGHT / 2f
             ) / 3f;
         }
 
@@ -143,13 +143,13 @@ public class LoadingScreen extends GameScreen {
         public void update(float delta) {
             alphaInc += delta * alphaSpd;
             alpha = (float) Math.abs(Math.sin(alphaInc));
-            float k = len(x - (Config.rndWidth - Config.rndHeight) / 2f, y, Config.rndHeight / 2f, Config.rndHeight / 2f) / r2;
+            float k = len(x - (Config.RENDER_WIDTH - Config.RENDER_HEIGHT) / 2f, y, Config.RENDER_HEIGHT / 2f, Config.RENDER_HEIGHT / 2f) / r2;
             alpha *= 1f - ((k <= 1f)?k:1f);
             paint.setAlpha((int) (alpha * 255));
             x += vx * delta * 5f;
             y += vy * delta * 5f;
-            if (x < 0 || x > Config.rndWidth) vx = -vx;
-            if (y < 0 || y > Config.rndHeight) vy = -vy;
+            if (x < 0 || x > Config.RENDER_WIDTH) vx = -vx;
+            if (y < 0 || y > Config.RENDER_HEIGHT) vy = -vy;
         }
 
 

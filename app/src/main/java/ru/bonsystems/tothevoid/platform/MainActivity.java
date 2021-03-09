@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import ru.bonsystems.tothevoid.R;
 import ru.bonsystems.tothevoid.assets.game.BaseGame;
 import ru.bonsystems.tothevoid.assets.game.screens.PauseScreen;
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         Controller.getInstance().onActivityCreate(this);
     }
 

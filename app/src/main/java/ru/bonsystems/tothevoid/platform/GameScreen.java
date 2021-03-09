@@ -27,7 +27,7 @@ public abstract class GameScreen extends GameObject implements View.OnTouchListe
     protected UIModel uiModel;
 
     public GameScreen() {
-        buffer = Bitmap.createBitmap((int) Config.rndWidth, (int) Config.rndHeight, Bitmap.Config.ARGB_8888);
+        buffer = Bitmap.createBitmap((int) Config.RENDER_WIDTH, (int) Config.RENDER_HEIGHT, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(buffer);
         paint = new Paint();
         (transform = new Matrix()).setScale(1 / Config.scaleFactor, 1 / Config.scaleFactor);

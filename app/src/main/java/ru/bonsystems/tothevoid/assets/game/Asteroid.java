@@ -81,8 +81,7 @@ public class Asteroid extends GameObject{
     * */
     @Override
     public void render(Canvas canvas) {
-        if (x < MAX_RADIUS + Config.rndWidth) canvas.drawBitmap(texture, transform, paint);
-        if (Config.debugMode) drawDebug(canvas);
+        if (x < MAX_RADIUS + Config.RENDER_WIDTH) canvas.drawBitmap(texture, transform, paint);
     }
 
     private void generate(){
@@ -117,7 +116,7 @@ public class Asteroid extends GameObject{
         * Задаём координаты астероида
         * Нужно поместить его за пределы экрана, но не за пределы оперативной памяти, всё пропорционально размерам экрана
         * */
-        x = (Config.rndWidth + MAX_RADIUS) + (RANDOM.nextFloat() * MAX_RADIUS * 3f);
+        x = (Config.RENDER_WIDTH + MAX_RADIUS) + (RANDOM.nextFloat() * MAX_RADIUS * 3f);
         y = RANDOM.nextFloat() * (Camera.getInstance().getAreaHeight() - MAX_RADIUS);
         /*
         * Скорости для астероидов.
@@ -160,21 +159,8 @@ public class Asteroid extends GameObject{
             * */
 
             if (maxCornerRadius < cornersPoints[i].getZ()) maxCornerRadius = cornersPoints[i].getZ();
-            /*if (cornersPoints[i].getY() < minY) minY = cornersPoints[i].getY();
-            if (cornersPoints[i].getY() > maxY) maxY = cornersPoints[i].getY();
-            if (cornersPoints[i].getX() < minX) minX = cornersPoints[i].getX();
-            if (cornersPoints[i].getX() > maxX) maxX = cornersPoints[i].getX();*/
         }
-        /*for (int i = 0; i < cornersPoints.length; i++) {
-            cornersPoints[i].setX(cornersPoints[i].getX() - minX);
-            cornersPoints[i].setY(cornersPoints[i].getY() - minY);
-        }
-        maxX -= minX;
-        maxY -= minY;
-        minX = 0;
-        minY = 0;
 
-        //maxCornerRadius = (maxX > maxY)? maxX / 2f: maxY / 2f; */
         angle = (float) (RANDOM.nextFloat() * Math.PI * 2f);
     }
 
@@ -189,15 +175,14 @@ public class Asteroid extends GameObject{
 
     }
 
+    /**
+     * Сдвигаем все координаты углов так, чтобы
+     * они стали вокруг центра.
+     * Да, они и так были вокруг центра, пока центр был в точке (0; 0), но некоторые точки имели отрицательные координаты,
+     * а это недопустимо в расчётах коллизии. Всё, что меньше нуля всегда при пересечении возвратит false,
+     * поэтому я смещаю все координаты на максимальную возможную координату, т.к. астероид ещё будет вращаться
+     **/
     private void moveAllPointsToTheCenter(){
-        //if (true) return;
-        /**
-         * Сдвигаем все координаты углов так, чтобы
-         * они стали вокруг центра.
-         * Да, они и так были вокруг центра, пока центр был в точке (0; 0), но некоторые точки имели отрицательные координаты,
-         * а это недопустимо в расчётах коллизии. Всё, что меньше нуля всегда при пересечении возвратит false,
-         * поэтому я смещаю все координаты на максимальную возможную координату, т.к. астероид ещё будет вращаться
-         * */
         for (int i = 0; i < cornersCount; i++) {
             cornersPoints[i].setX(cornersPoints[i].getX() + center.getX());
             cornersPoints[i].setY(cornersPoints[i].getY() + center.getY());
@@ -219,7 +204,6 @@ public class Asteroid extends GameObject{
         * Делаем эффект фотошопа "обтравка по фигуре"
         * xFerPaint закэширован мною для оптимизации
         **/
-        //System.out.println((3 + "x_corners_" + RANDOM.nextInt(1)));
         Bitmap scaledDoge = null;
         if (GameState.jokeDoge) {
             scaledDoge = Bitmap.createScaledBitmap(textures.get("doge"), (int) (maxCornerRadius * 2f), (int) (maxCornerRadius * 2f), true);
@@ -258,15 +242,15 @@ public class Asteroid extends GameObject{
         return alive;
     }
 
-    private Paint red_paint = new Paint();
+    private Paint redPaint = new Paint();
     private void drawDebug(Canvas canvas) {
-        red_paint.setColor(Color.RED);
+        redPaint.setColor(Color.RED);
         for (int i = 0; i < cornersCount; i++){
-            canvas.drawCircle(cornersPoints[i].getX() + x, cornersPoints[i].getY() + y - Camera.getInstance().getY(), 3, red_paint);
-            canvas.drawText("(" + cornersPoints[i].getX() + ";" + cornersPoints[i].getY() + ")", cornersPoints[i].getX() + x, cornersPoints[i].getY() + y - Camera.getInstance().getY(), red_paint);
+            canvas.drawCircle(cornersPoints[i].getX() + x, cornersPoints[i].getY() + y - Camera.getInstance().getY(), 3, redPaint);
+            canvas.drawText("(" + cornersPoints[i].getX() + ";" + cornersPoints[i].getY() + ")", cornersPoints[i].getX() + x, cornersPoints[i].getY() + y - Camera.getInstance().getY(), redPaint);
         }
-        canvas.drawCircle(center.getX() + x, center.getY() + y - Camera.getInstance().getY(), 3, red_paint);
-        canvas.drawText("(" + center.getX() + ";" + center.getY() + ")", center.getX() + x, center.getY() + y - Camera.getInstance().getY(), red_paint);
+        canvas.drawCircle(center.getX() + x, center.getY() + y - Camera.getInstance().getY(), 3, redPaint);
+        canvas.drawText("(" + center.getX() + ";" + center.getY() + ")", center.getX() + x, center.getY() + y - Camera.getInstance().getY(), redPaint);
     }
 
     /*

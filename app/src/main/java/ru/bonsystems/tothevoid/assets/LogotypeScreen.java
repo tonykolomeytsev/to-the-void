@@ -23,8 +23,8 @@ public class LogotypeScreen extends GameScreen {
         texture = loadTextureFromAssets("img/bonsystems.png");
         paint = new Paint();
         paint.setColor(Color.BLACK);
-        x = (Config.rndWidth - texture.getWidth()) / 2f;
-        y = (Config.rndHeight - texture.getHeight()) / 2f;
+        x = (Config.RENDER_WIDTH - texture.getWidth()) / 2f;
+        y = (Config.RENDER_HEIGHT - texture.getHeight()) / 2f;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class LogotypeScreen extends GameScreen {
 
     @Override
     public void render() {
-        canvas.drawRect(0f, 0f, Config.rndWidth, Config.rndHeight, paint);
+        canvas.drawRect(0f, 0f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT, paint);
         canvas.drawBitmap(texture, x, y, paint);
     }
 

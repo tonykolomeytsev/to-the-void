@@ -15,6 +15,9 @@ import ru.bonsystems.tothevoid.platform.GameObject;
  */
 public class SpaceBackground extends GameObject {
 
+    private final static Random random = new Random();
+    private final static Camera camera = Camera.getInstance();
+    private final static Paint dustPaint = new Paint();
     private final int dustsCount;
     private Dust[] dusts;
     private int[] sparksPallet;
@@ -64,24 +67,21 @@ public class SpaceBackground extends GameObject {
         private float alpha, radius, vx, vy;
         private boolean alive;
 
-        public Dust(boolean rand, float dustRadius){
-            Random random = new Random();
+        public Dust(boolean rand, float dustRadius) {
             this.radius = 0.2f + dustRadius * random.nextFloat();
             if (rand) {
-                this.x = Camera.getInstance().getAreaWidth() * 2f * random.nextFloat();
-                this.y = Camera.getInstance().getAreaHeight() * random.nextFloat();
+                this.x = camera.getAreaWidth() * 2f * random.nextFloat();
             } else {
-                this.x = Camera.getInstance().getAreaWidth() + (Camera.getInstance().getAreaWidth() * random.nextFloat());
-                this.y = Camera.getInstance().getAreaHeight() * random.nextFloat();
+                this.x = camera.getAreaWidth() + (Camera.getInstance().getAreaWidth() * random.nextFloat());
             }
+            this.y = camera.getAreaHeight() * random.nextFloat();
             init();
         }
 
         @Override
         public void init() {
-            Random random = new Random();
-            (paint = new Paint()).setColor(sparksPallet[random.nextInt(sparksPallet.length)]);
-            paint.setAntiAlias(true);
+            dustPaint.setColor(sparksPallet[random.nextInt(sparksPallet.length)]);
+            dustPaint.setAntiAlias(true);
             vx = ((random.nextFloat() * 1f) - 10f) * (5f + radius) + (5f + radius) * GameState.gameSpeed / 2f;
             vy = 0f;
             this.alpha = 0.8f + (0.2f * random.nextFloat());
@@ -90,11 +90,10 @@ public class SpaceBackground extends GameObject {
 
         @Override
         public void update(float delta) {
-            paint.setAlpha((int) (alpha * 255));
+            dustPaint.setAlpha((int) (alpha * 255));
             x += (vx * delta * 3f);
             y += (vy * delta * 5f);
             if (x < 0) alive = false;
-            //if (y > Config.rndHeight) alive = false;
         }
 
         public boolean isAlive() {
@@ -108,6 +107,4 @@ public class SpaceBackground extends GameObject {
         }
 
     }
-
-
 }

@@ -29,9 +29,9 @@ public class PauseScreen extends GameScreen implements View.OnTouchListener {
     private Paint transparentPaint;
 
     public PauseScreen() {
-        x = Config.rndWidth / 2f;
-        y = Config.rndHeight / 2f;
-        renderRadius = Config.rndHeight * 0.3333f;
+        x = Config.RENDER_WIDTH / 2f;
+        y = Config.RENDER_HEIGHT / 2f;
+        renderRadius = Config.RENDER_HEIGHT * 0.3333f;
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -93,7 +93,7 @@ public class PauseScreen extends GameScreen implements View.OnTouchListener {
 
     @Override
     public void render() {
-        canvas.drawRect(0f, 0f, Config.rndWidth, Config.rndHeight, darkPaint);
+        canvas.drawRect(0f, 0f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT, darkPaint);
         canvas.drawCircle(x, y, (float) (renderRadius + Math.sin(radiusIncrement) * 15f), transparentPaint);
         canvas.drawCircle(x, y, renderRadius, paint);
 

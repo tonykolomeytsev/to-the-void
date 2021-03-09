@@ -100,8 +100,8 @@ public class StartTransition extends Transition {
         @Override
         public void init() {
             Random random = new Random();
-            x = (random.nextFloat() * Config.rndWidth * 0.7f) + Config.rndWidth * 0.15f;
-            y = (random.nextFloat() * Config.rndHeight * 0.7f) + Config.rndHeight * 0.15f;
+            x = (random.nextFloat() * Config.RENDER_WIDTH * 0.7f) + Config.RENDER_WIDTH * 0.15f;
+            y = (random.nextFloat() * Config.RENDER_HEIGHT * 0.7f) + Config.RENDER_HEIGHT * 0.15f;
             r = 0f;
 
             (paint = new Paint()).setColor(Color.rgb(0, 0, 0));
@@ -111,7 +111,7 @@ public class StartTransition extends Transition {
         public void update(float delta) {
             r += 75f * delta;
             r *= 1.2;
-            if (r > Config.rndWidth) r = Config.rndWidth;
+            if (r > Config.RENDER_WIDTH) r = Config.RENDER_WIDTH;
         }
 
         @Override

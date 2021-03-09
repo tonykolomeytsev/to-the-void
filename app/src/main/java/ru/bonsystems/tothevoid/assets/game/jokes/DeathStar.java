@@ -18,8 +18,8 @@ public class DeathStar extends Joke {
         transform = new Matrix();
         texture = loadTextureFromAssets("game/jokes/star.png");
         paint = new Paint();
-        x = Config.rndWidth + texture.getWidth() + 10f;
-        y = Config.rndHeight * 0.5f;//(new Random()).nextFloat() * (Config.rndHeight - texture.getHeight());
+        x = Config.RENDER_WIDTH + texture.getWidth() + 10f;
+        y = Config.RENDER_HEIGHT * 0.5f;//(new Random()).nextFloat() * (Config.rndHeight - texture.getHeight());
         Log.i(this, "INIT");
     }
 

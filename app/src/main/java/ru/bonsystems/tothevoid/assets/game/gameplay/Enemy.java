@@ -42,7 +42,7 @@ public class Enemy extends Rocket {
         (smokeEffect = new SmokeEffect(this)).setHalfHeightTranslation(halfHeight);
         (fireEffect = new FireEffect(this)).setHalfHeightTranslation(halfHeight);
         x = -texture.getWidth();
-        y = Config.rndHeight / 2f;
+        y = Config.RENDER_HEIGHT / 2f;
         elapedTime = 0f;
         bulletElapsedTime = 0f;
         vX = 0;
@@ -91,7 +91,7 @@ public class Enemy extends Rocket {
                 bullets.add(new Bullet(this));
             }
         } else if (elapedTime > 3f) {
-            vX = ((Config.rndWidth * 0.75f) - x) / 10f;
+            vX = ((Config.RENDER_WIDTH * 0.75f) - x) / 10f;
         }
     }
 

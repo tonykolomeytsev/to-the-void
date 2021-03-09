@@ -22,7 +22,7 @@ public class Player extends Rocket {
     @Override
     public void init() {
         super.init();
-        x = Config.rndWidth / 4;
+        x = Config.RENDER_WIDTH / 4;
         y = Camera.getInstance().getAreaHeight() / 2;
         acceleration = 0f;
         Camera.getInstance().setDirection(this);
@@ -30,7 +30,7 @@ public class Player extends Rocket {
         collisionPoints = new Vector3f[]{new Vector3f(), new Vector3f(), new Vector3f()};
         smokeEffect = new SmokeEffect(this);
         fireEffect = new FireEffect(this);
-        x = Config.rndWidth / 4;
+        x = Config.RENDER_WIDTH / 4;
     }
 
     @Override
