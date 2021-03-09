@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">To the Void :: Remastered</string>
+    <string name="settings_header">Конфигурация</string>
+    <string name="pref_1">Разрешение экрана: </string>
+    <string name="pref_2">Разрешение отрисовки: </string>
+    <string name="pref_3">Это демонстрационная версия игры. Часть контента недоступна. </string>
+    <string name="pause_header">Пауза</string>
+    <string name="pause_menu">В меню</string>
+    <string name="pause_continue">Продолжить</string>
+    <string name="pause_restart">Заново</string>
+    <string name="new_record_congratulations">Новый рекорд!</string>
+    <string name="debug_mode">Режим отладки</string>
+    <string name="enabled">включен</string>
+    <string name="disabled">выключен</string>
+</resources>
