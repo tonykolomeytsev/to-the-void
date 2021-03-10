@@ -19,6 +19,8 @@ import androidx.lifecycle.OnLifecycleEvent;
 import java.util.Stack;
 
 import ru.bonsystems.tothevoid.R;
+import ru.bonsystems.tothevoid.assets.LoadingScreen;
+import ru.bonsystems.tothevoid.assets.StartScreen;
 import ru.bonsystems.tothevoid.platform.extend.uis.Control;
 
 /**
@@ -29,7 +31,7 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
     private Root root;
     private SurfaceView presenter;
     private Thread performThread;
-    private boolean isRunning;
+    private boolean isRunning = false;
 
     public static Controller getInstance() {
         return ourInstance;
@@ -56,7 +58,6 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
         activity.getLifecycle().addObserver(new GameLifecycleObserver());
 
         keepScreenOn(activity);
-        ((MainActivity)activity).hideSystemUI();
 
         presenter = new SurfaceView(activity);
         presenter.getHolder().addCallback(this);
@@ -83,13 +84,13 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        System.out.println("SURFACE CREATED");
         resume();
     }
 
     private void resume() {
         final boolean isApplicationAlreadyActive = performThread != null;
         if (!isApplicationAlreadyActive && !isRunning) {
+            isRunning = true;
             performThread = new Thread(this);
             performThread.setName("MiniPlatform MainLoop");
             performThread.setPriority(Thread.MAX_PRIORITY);
@@ -147,14 +148,21 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
             return Controller.getInstance().root.getScreenStack();
         }
 
+        @OnLifecycleEvent(Lifecycle.Event.ON_START)
+        public void onStart() {
+            onResume();
+        }
+
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         public void onResume() {
             if (getScreenStack().size() > 1) getScreenStack().peek().onShow();
+            Controller.getInstance().resume();
         }
 
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         public void onPause() {
             if (getScreenStack().size() > 1) getScreenStack().peek().onHide();
+            Controller.getInstance().pause();
         }
     }
 }

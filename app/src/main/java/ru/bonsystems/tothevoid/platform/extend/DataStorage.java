@@ -44,7 +44,7 @@ public class DataStorage {
     }
 
     public DataStorage reload(){
-        File external = Controller.getInstance().getActivity().getExternalFilesDir(null);
+        File external = Controller.getInstance().getApplicationContext().getExternalFilesDir(null);
         File heap = new File(external + "/heap.json");
         String json = readFromFile(heap);
         if (json == null) return this;
@@ -85,7 +85,7 @@ public class DataStorage {
     }
 
     public DataStorage apply(){
-        File external = Controller.getInstance().getActivity().getExternalFilesDir(null);
+        File external = Controller.getInstance().getApplicationContext().getExternalFilesDir(null);
         File heap = new File(external + "/heap.json");
         FileOutputStream outputStream;
 

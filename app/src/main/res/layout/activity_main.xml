@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".platform.MainActivity">
+    tools:context=".platform.MainActivity"
+    android:id="@+id/containerView">
+
     <LinearLayout
         android:id="@+id/surface_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"/>
 
-    </LinearLayout>
 </RelativeLayout>

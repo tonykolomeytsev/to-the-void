@@ -20,6 +20,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        hideSystemUI();
+    }
+
+    @Override
     public void onBackPressed() {
         Root root = Controller.getInstance().getRoot();
         if (root.getScreenStack().peek() instanceof BaseGame) {
@@ -43,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().getDecorView().setAlpha(0.0f);
-        }
+        getWindow().getDecorView().setAlpha(0.0f);
     }
 }

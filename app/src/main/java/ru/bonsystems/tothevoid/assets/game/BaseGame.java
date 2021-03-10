@@ -69,7 +69,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
 
 
         playerControlArea = new Control() {@Override public void update(float delta) {}};
-        playerControlArea.setArea(new Control.Area(Config.RENDER_WIDTH / 2f, 100f, Config.RENDER_WIDTH / 2f, Config.RENDER_HEIGHT - 100f));
+        playerControlArea.setArea(new Control.Area(0f, 100f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT - 100f));
         playerControlArea.addOnTouchListener(playerControlProcessor = new PlayerControl());
         uiModel.addControl(playerControlArea);
 
@@ -78,14 +78,11 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
             asteroids[i] = new Asteroid();
             asteroids[i].setX(Config.RENDER_WIDTH * 2f);
         }
-        collider = new Collider(new Runnable() {
-            @Override
-            public void run() {
-                DataStorage.getInstance()
-                        .set("highscore", String.valueOf(GameState.highscore))
-                        .apply();
-                makeBoom();
-            }
+        collider = new Collider(() -> {
+            DataStorage.getInstance()
+                    .set("highscore", String.valueOf(GameState.highscore))
+                    .apply();
+            makeBoom();
         });
         scoreGUI = new ScoreGUI();
 
@@ -110,34 +107,27 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
 
         joke = null;
         final Pointer<Integer> integerPointer = new Pointer<>(0);
-        GameState.setScoreHalfThousandListener(new GameState.ScoreHalfThousandListener() {
-            @Override
-            public void OnScoreEqualsHalfThousand() {
-                switch (integerPointer.get()) {
-                    case 0:
-                        GameState.jokeDoge = true;
-                        break;
+        GameState.setScoreHalfThousandListener(() -> {
+            switch (integerPointer.get()) {
+                case 0:
+                    GameState.jokeDoge = true;
+                    break;
 
-                    case 1:
-                        GameState.jokeDoge = false;
-                        launchEnemy();
-                        break;
+                case 1:
+                    GameState.jokeDoge = false;
+                    launchEnemy();
+                    break;
 
-                    case 2:
-                        async(new Runnable() { // в асинктаске, потому что картинка может быть тяжелая
-                            @Override
-                            public void run() {
-                                joke = (new DeathStar());
-                            }
-                        });
-                        break;
+                case 2:
+                    // в асинктаске, потому что картинка может быть тяжелая
+                    async(() -> joke = new DeathStar());
+                    break;
 
-                    case 5:
-                        launchEnemy();
-                        break;
-                }
-                integerPointer.set(integerPointer.get() + 1);
+                case 5:
+                    launchEnemy();
+                    break;
             }
+            integerPointer.set(integerPointer.get() + 1);
         });
     }
 

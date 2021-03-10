@@ -42,7 +42,7 @@ public abstract class GameObject {
 
     public static Bitmap loadTextureFromAssets(String fileName) {
         Bitmap temporary = null;
-        AssetManager assetManager = Controller.getInstance().getActivity().getAssets();
+        AssetManager assetManager = Controller.getInstance().getResources().getAssets();
         try {
             InputStream inputStream = assetManager.open(fileName);
             temporary = BitmapFactory.decodeStream(inputStream);
@@ -54,7 +54,7 @@ public abstract class GameObject {
 
     public static Bitmap loadTextureFromAssets(String fileName, Bitmap.Config config) {
         Bitmap temporary = null;
-        AssetManager assetManager = Controller.getInstance().getActivity().getAssets();
+        AssetManager assetManager = Controller.getInstance().getResources().getAssets();
         try {
             InputStream inputStream = assetManager.open(fileName);
             temporary = BitmapFactory.decodeStream(inputStream);
@@ -71,7 +71,7 @@ public abstract class GameObject {
     }
 
     public static Typeface loadTypefaceFromAssets(String filename) {
-        AssetManager assetManager = Controller.getInstance().getActivity().getAssets();
+        AssetManager assetManager = Controller.getInstance().getResources().getAssets();
         return Typeface.createFromAsset(assetManager, filename);
     }
 
@@ -91,6 +91,4 @@ public abstract class GameObject {
             }
         }
     }
-
-
 }

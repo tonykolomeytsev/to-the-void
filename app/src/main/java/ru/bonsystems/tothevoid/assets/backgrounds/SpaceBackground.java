@@ -17,7 +17,6 @@ public class SpaceBackground extends GameObject {
 
     private final static Random random = new Random();
     private final static Camera camera = Camera.getInstance();
-    private final static Paint dustPaint = new Paint();
     private final int dustsCount;
     private Dust[] dusts;
     private int[] sparksPallet;
@@ -64,6 +63,7 @@ public class SpaceBackground extends GameObject {
 
     private class Dust extends GameObject {
 
+        private Paint dustPaint;
         private float alpha, radius, vx, vy;
         private boolean alive;
 
@@ -80,6 +80,7 @@ public class SpaceBackground extends GameObject {
 
         @Override
         public void init() {
+            dustPaint = new Paint();
             dustPaint.setColor(sparksPallet[random.nextInt(sparksPallet.length)]);
             dustPaint.setAntiAlias(true);
             vx = ((random.nextFloat() * 1f) - 10f) * (5f + radius) + (5f + radius) * GameState.gameSpeed / 2f;
@@ -103,7 +104,7 @@ public class SpaceBackground extends GameObject {
         @Override
         public void render(Canvas canvas) {
             float translatedY = (y - Camera.getInstance().getY() * radius * 0.15f);
-            canvas.drawCircle(x, translatedY, radius, paint);
+            canvas.drawCircle(x, translatedY, radius, dustPaint);
         }
 
     }
