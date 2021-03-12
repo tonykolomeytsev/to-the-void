@@ -1,6 +1,5 @@
 package ru.bonsystems.tothevoid.platform;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         hideSystemUI();
         InsetsUtils.addSystemTopPadding(findViewById(R.id.containerView));
     }
+
     @Override
     public void onBackPressed() {
         Root root = Controller.getInstance().getRoot();

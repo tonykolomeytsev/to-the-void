@@ -107,7 +107,7 @@ public class GameOverHighscoreScreen extends GameScreen implements View.OnTouchL
         return true;
     }
 
-    class Label extends Control {
+    private static class Label extends Control {
         final String label;
 
         public Label(String label, float size) {
@@ -146,7 +146,6 @@ public class GameOverHighscoreScreen extends GameScreen implements View.OnTouchL
             return this;
         }
 
-        @Deprecated
         @Override
         public void update(float delta) {
         }
@@ -154,9 +153,6 @@ public class GameOverHighscoreScreen extends GameScreen implements View.OnTouchL
         @Override
         public void render(Canvas canvas) {
             canvas.drawText(label, x, y, paint);
-            /*Config.debugMode = true;
-            super.render(canvas);
-            Config.debugMode = false;*/
         }
     }
 }

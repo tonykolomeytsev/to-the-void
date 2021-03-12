@@ -11,7 +11,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
 /**
  * Created by Kolomeytsev Anton on 24.02.2016.
  */
-public class ScoreGUI extends GameObject{
+public class ScoreGUI extends GameObject {
     private Bitmap hsIcon;
     private String score, highscore;
     Paint scorePaint, highScorePaint;

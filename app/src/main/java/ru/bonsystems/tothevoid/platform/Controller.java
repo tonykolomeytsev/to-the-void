@@ -1,11 +1,8 @@
 package ru.bonsystems.tothevoid.platform;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.graphics.Canvas;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -19,9 +16,6 @@ import androidx.lifecycle.OnLifecycleEvent;
 import java.util.Stack;
 
 import ru.bonsystems.tothevoid.R;
-import ru.bonsystems.tothevoid.assets.LoadingScreen;
-import ru.bonsystems.tothevoid.assets.StartScreen;
-import ru.bonsystems.tothevoid.platform.extend.uis.Control;
 
 /**
  * Created by Kolomeytsev Anton
@@ -51,6 +45,7 @@ public class Controller extends Application implements SurfaceHolder.Callback, R
 
     /**
      * Activity сообщает о своём появлении передавая ссылку на себя контроллеру
+     *
      * @param activity - ссылка на Activity
      */
     public void onActivityCreate(AppCompatActivity activity) {

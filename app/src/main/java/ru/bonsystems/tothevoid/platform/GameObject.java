@@ -31,7 +31,7 @@ public abstract class GameObject {
     }
 
     public void init() {
-
+        /* no-op */
     }
 
     public abstract void update(float delta);

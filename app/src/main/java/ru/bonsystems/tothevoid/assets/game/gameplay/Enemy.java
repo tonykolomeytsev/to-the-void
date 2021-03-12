@@ -125,7 +125,8 @@ public class Enemy extends Rocket {
             radiusIncrement = 0;
             x = parent.getX();
             y = parent.getY() + halfHeight;
-            xSpeed = random.nextInt(7) + 13; xSpeed *= 60;
+            xSpeed = random.nextInt(7) + 13;
+            xSpeed *= 60;
         }
 
         @Override

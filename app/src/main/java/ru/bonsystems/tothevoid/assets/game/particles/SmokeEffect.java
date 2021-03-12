@@ -21,15 +21,15 @@ public class SmokeEffect extends GameObject {
     private static Random random = new Random();
     private float halfHeightTranslation = 16f;
 
-    public SmokeEffect(Rocket parent){
+    public SmokeEffect(Rocket parent) {
         this.parent = parent;
         if (parent instanceof Player) ALPHA_DECREMENT = 15f;
         else ALPHA_DECREMENT = 360f;
         initTrain(); // TRAIN переводится как "шлейф", а не только как "поезд".
     }
 
-    private void initTrain(){
-        for (int i = 0; i < train.length; i++){
+    private void initTrain() {
+        for (int i = 0; i < train.length; i++) {
             train[i] = new Smoke();
             train[i].fillValues();
             train[i].setCoordinates((int) parent.getX(), (int) (parent.getY() + halfHeightTranslation));
@@ -38,16 +38,16 @@ public class SmokeEffect extends GameObject {
 
     @Override
     public void render(Canvas canvas) {
-        for (int i = 0; i < train.length; i++){
+        for (int i = 0; i < train.length; i++) {
             train[i].render(canvas);
         }
     }
 
     @Override
     public void update(float delta) {
-        for (int i = 0; i < train.length; i++){
+        for (int i = 0; i < train.length; i++) {
             train[i].update(delta);
-            if ((train[i].getX() < -30) || (train[i].alpha < 10)){
+            if ((train[i].getX() < -30) || (train[i].alpha < 10)) {
                 train[i].fillValues();
                 train[i].setCoordinates((int) parent.getX(), (int) (parent.getY() + halfHeightTranslation));
             }
@@ -69,26 +69,27 @@ public class SmokeEffect extends GameObject {
         private float aDecrement;
         private Paint paint = new Paint();
 
-        public Smoke(){
+        public Smoke() {
             paint.setARGB(255, 189, 195, 199);
             paint.setAntiAlias(true);
             aDecrement = ALPHA_DECREMENT + (random.nextFloat() * 100f);
         }
 
-        public void setCoordinates(int X, int Y){
+        public void setCoordinates(int X, int Y) {
             this.x = X;
             this.y = Y;
         }
 
-        public int getX(){
+        public int getX() {
             return x;
         }
 
-        public void fillValues(){
+        public void fillValues() {
             Random random = new Random();
             alpha = 255;
             radius = random.nextInt(3) + 5;
-            xSpeed = random.nextInt(7) + 13; xSpeed *= 30;
+            xSpeed = random.nextInt(7) + 13;
+            xSpeed *= 30;
             ySpeed = random.nextInt(4) - 2;
         }
 
@@ -96,7 +97,7 @@ public class SmokeEffect extends GameObject {
             canvas.drawCircle(x, y - Camera.getInstance().getY(), radius, paint);
         }
 
-        public void update(float delta){ /* обновляет состояние, то есть меняет координаты, градус поворота и т.д. */
+        public void update(float delta) { /* обновляет состояние, то есть меняет координаты, градус поворота и т.д. */
             x -= (xSpeed) * delta + ((xSpeed) * delta * GameState.gameSpeed / 2f);
             y += ySpeed;
             radius += 60f * delta;

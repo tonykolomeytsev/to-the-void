@@ -31,7 +31,7 @@ public class PauseScreen extends GameScreen implements View.OnTouchListener {
     public PauseScreen() {
         x = Config.RENDER_WIDTH / 2f;
         y = Config.RENDER_HEIGHT / 2f;
-        renderRadius = Config.RENDER_HEIGHT * 0.3333f;
+        renderRadius = Config.RENDER_HEIGHT * 0.44f;
 
         paint = new Paint();
         paint.setAntiAlias(true);

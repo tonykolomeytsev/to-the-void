@@ -42,7 +42,7 @@ public class ParticleStorm extends GameObject {
     @Override
     public void update(float delta) {
         particleCount = (int) (GameState.gameSpeed * 7f);
-        particleCount = (particleCount <= particles.length)? particleCount : particles.length;
+        particleCount = (particleCount <= particles.length) ? particleCount : particles.length;
         for (int i = 0; i < particleCount; i++) {
             if (!particles[i].isAlive()) particles[i] = new Particle(
                     Config.RENDER_WIDTH,

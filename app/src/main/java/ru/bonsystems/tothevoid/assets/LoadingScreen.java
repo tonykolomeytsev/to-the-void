@@ -24,7 +24,7 @@ public class LoadingScreen extends GameScreen {
     private int[] sparksPallet;
     private ArrayList<Dust> dusts;
 
-    public LoadingScreen(){
+    public LoadingScreen() {
 
     }
 
@@ -144,7 +144,7 @@ public class LoadingScreen extends GameScreen {
             alphaInc += delta * alphaSpd;
             alpha = (float) Math.abs(Math.sin(alphaInc));
             float k = len(x - (Config.RENDER_WIDTH - Config.RENDER_HEIGHT) / 2f, y, Config.RENDER_HEIGHT / 2f, Config.RENDER_HEIGHT / 2f) / r2;
-            alpha *= 1f - ((k <= 1f)?k:1f);
+            alpha *= 1f - ((k <= 1f) ? k : 1f);
             paint.setAlpha((int) (alpha * 255));
             x += vx * delta * 5f;
             y += vy * delta * 5f;

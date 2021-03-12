@@ -17,13 +17,13 @@ public class FireEffect extends GameObject {
     private Rocket parent;
     private float halfHeightTranslation = 16f;
 
-    public FireEffect(Rocket parent){
+    public FireEffect(Rocket parent) {
         this.parent = parent;
         initTrain(); // TRAIN переводится как "шлейф", а не только как "поезд".
     }
 
-    private void initTrain(){
-        for (int i = 0; i < train.length; i++){
+    private void initTrain() {
+        for (int i = 0; i < train.length; i++) {
             train[i] = new Sparcle();
             train[i].set((int) (parent.getX() - (2 * i)), (int) (parent.getY() + halfHeightTranslation), (6 - (i * 2)));
         }
@@ -31,16 +31,16 @@ public class FireEffect extends GameObject {
 
     @Override
     public void render(Canvas canvas) {
-        for (int i = 0; i < train.length; i++){
+        for (int i = 0; i < train.length; i++) {
             train[i].render(canvas);
         }
     }
 
     @Override
     public void update(float delta) {
-        for (int i = 0; i < train.length; i++){
+        for (int i = 0; i < train.length; i++) {
             train[i].update(delta);
-            if ((train[i].getRadius() == 0)){
+            if ((train[i].getRadius() == 0)) {
                 train[i].set((int) parent.getX(), (int) (parent.getY() + halfHeightTranslation), 9);
             }
         }
@@ -61,7 +61,7 @@ public class FireEffect extends GameObject {
         private float buffer_radius_increment;
         private Random rnd = new Random();
 
-        public Sparcle(){
+        public Sparcle() {
             paint.setARGB(255, 234, 179, 89);
             paint.setAntiAlias(true);
             buffer_radius_increment = 0.71f;
@@ -69,13 +69,13 @@ public class FireEffect extends GameObject {
             ySpeed = 0;
         }
 
-        public void set(int X, int Y, int radius){
+        public void set(int X, int Y, int radius) {
             this.x = X;
             this.y = Y;
             this.radius = radius;
         }
 
-        public float getRadius(){
+        public float getRadius() {
             return radius;
         }
 
@@ -83,7 +83,7 @@ public class FireEffect extends GameObject {
             canvas.drawCircle(x, y - Camera.getInstance().getY(), radius, paint);
         }
 
-        public void update(float delta){ /* обновляет состояние, то есть меняет координаты, градус поворота и т.д. */
+        public void update(float delta) { /* обновляет состояние, то есть меняет координаты, градус поворота и т.д. */
             x -= (xSpeed * delta);
             radius -= buffer_radius_increment;
             if (radius < 0) radius = 0;

@@ -111,7 +111,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
                 });
         (settingsButton = new SettingsButton())
                 .addOnTouchListener((view, motionEvent) -> {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                         Controller.getInstance().getPresenter().setOnTouchListener(null);
                         Controller.getInstance().getRoot().pushScreen(new SettingsScreen(), new StartTransition());
                     }

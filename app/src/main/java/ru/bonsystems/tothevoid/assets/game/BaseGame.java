@@ -68,7 +68,11 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         particleStorm = new ParticleStorm();
 
 
-        playerControlArea = new Control() {@Override public void update(float delta) {}};
+        playerControlArea = new Control() {
+            @Override
+            public void update(float delta) {
+            }
+        };
         playerControlArea.setArea(new Control.Area(0f, 100f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT - 100f));
         playerControlArea.addOnTouchListener(playerControlProcessor = new PlayerControl());
         uiModel.addControl(playerControlArea);
@@ -165,7 +169,8 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         updateEnemy(delta);
         updateExplosion(delta);
 
-        if (joke != null) if (joke.isAlive()) joke.update(delta); else joke = null;
+        if (joke != null) if (joke.isAlive()) joke.update(delta);
+        else joke = null;
 
         GameState.gameSpeed += delta / 50f;
         GameState.incrementScore(50f * delta);
@@ -240,12 +245,13 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         if (gameOver) return;
         explosion = new ExplosionEffect(player, new ExplosionEffect.CompleteListener() {
             private int i = 0;
+
             @Override
             public void OnExplosionComplete() {
                 i++;
                 if (i == 1) {
                     System.out.println(Controller.getInstance().getRoot().getScreenStack());
-                    GameScreen gameScreen = GameState.isHighscoreNow() ? new GameOverHighscoreScreen() : new GameOverScreen() ;
+                    GameScreen gameScreen = GameState.isHighscoreNow() ? new GameOverHighscoreScreen() : new GameOverScreen();
                     Controller.getInstance().getRoot().changeScreen(gameScreen, OpacityTransition.getBasic());
                 }
             }
@@ -273,7 +279,8 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         private float dy, ly, cy, ay;
 
         public PlayerControl() {
-            ay = 0f; dy = 0f;
+            ay = 0f;
+            dy = 0f;
 
         }
 
@@ -283,7 +290,8 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
             float newPosX = Config.RENDER_WIDTH / 4f;
             float newPosY = player.getY() - ay * delta;
             if (newPosY < 0) newPosX = 0;
-            if (newPosY > Camera.getInstance().getAreaHeight()) newPosY = Camera.getInstance().getAreaHeight();
+            if (newPosY > Camera.getInstance().getAreaHeight())
+                newPosY = Camera.getInstance().getAreaHeight();
             ay *= 0.8;
             if (dy > -0.5 && dy < 0.5) dy = 0;
 
@@ -309,7 +317,10 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         }
 
         public void reset() {
-            ay = 0f; dy = 0f; ly = 0f; cy = 0f;
+            ay = 0f;
+            dy = 0f;
+            ly = 0f;
+            cy = 0f;
         }
     }
 

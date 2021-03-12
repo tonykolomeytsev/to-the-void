@@ -36,8 +36,8 @@ public class SettingsScreen extends GameScreen implements View.OnTouchListener {
         String label2 = Controller.getInstance().getResources().getString(R.string.pref_2);
         String label3 = Controller.getInstance().getResources().getString(R.string.pref_3);
         String label4 = Controller.getInstance().getString(R.string.debug_mode);
-        prefs[0] = new Label(label1 + " " + (int)Config.scrWidth + " x " + (int)Config.scrHeight, 30f, 40f, 160f);
-        prefs[1] = new Label(label2 + " " + (int)Config.RENDER_WIDTH + " x " + (int)Config.RENDER_HEIGHT, 30f, 40f, 220f);
+        prefs[0] = new Label(label1 + " " + (int) Config.scrWidth + " x " + (int) Config.scrHeight, 30f, 40f, 160f);
+        prefs[1] = new Label(label2 + " " + (int) Config.RENDER_WIDTH + " x " + (int) Config.RENDER_HEIGHT, 30f, 40f, 220f);
         prefs[2] = new Label(label3, 30f, 40f, 280f);
     }
 

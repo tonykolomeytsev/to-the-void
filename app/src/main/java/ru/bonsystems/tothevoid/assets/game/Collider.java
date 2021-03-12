@@ -15,7 +15,7 @@ public class Collider {
     private Vector3f[] playerPoints;
     private Runnable clashListener;
 
-    public Collider(Runnable clashListener){
+    public Collider(Runnable clashListener) {
         buffer_quarter_screen_width = (Config.RENDER_WIDTH / 4f) + 100f;
         buffer_player_full_height = 32f;
         playerPoints = new Vector3f[3];
@@ -44,18 +44,18 @@ public class Collider {
         asteroidPoints = asteroid.getPoints();
 
         playerPoints = copyOf(player.getCollisionPoints());
-        for (int i = 0; i < playerPoints.length; i++){
+        for (int i = 0; i < playerPoints.length; i++) {
             playerPoints[i].setX(playerPoints[i].getX() - asteroid.getX());
             playerPoints[i].setY(playerPoints[i].getY() - asteroid.getY());
         }
 
         playerPoints.toString();
 
-        for (int i = 0; i < asteroidPoints.length; i++){
+        for (int i = 0; i < asteroidPoints.length; i++) {
             int index2 = i + 1;
             if ((index2) == asteroidPoints.length) index2 = 0;
-            for (int j = 0; j < playerPoints.length; j++){
-                if (foo(asteroidCenter, asteroidPoints[i], asteroidPoints[index2], playerPoints[j])){
+            for (int j = 0; j < playerPoints.length; j++) {
+                if (foo(asteroidCenter, asteroidPoints[i], asteroidPoints[index2], playerPoints[j])) {
                     clashListener.run();
                     return true;
                 }
@@ -76,6 +76,7 @@ public class Collider {
     /**
      * Важно! Функция рассчета должна возвращать целое значение,
      * иначе всё идет в сракотень!
+     *
      * @param a
      * @param b
      * @param c
@@ -98,26 +99,26 @@ public class Collider {
 
     /**
      *
-    public boolean collideWithBullet(Player player, Bullet bullet) {
-        //if (GameState.isHyperSpace) return false;
-        if (player.isBanged()) return false;
+     public boolean collideWithBullet(Player player, Bullet bullet) {
+     //if (GameState.isHyperSpace) return false;
+     if (player.isBanged()) return false;
 
-        if (bullet.getX() > player.getX())
-            if (bullet.getY() > player.getY())
-                if (bullet.getY() < player.getY() + (player.getHalfHeight() << 1))
-                    if (bullet.getX() < player.getX() + (player.getHalfWidth() << 1))
-                        return true;
+     if (bullet.getX() > player.getX())
+     if (bullet.getY() > player.getY())
+     if (bullet.getY() < player.getY() + (player.getHalfHeight() << 1))
+     if (bullet.getX() < player.getX() + (player.getHalfWidth() << 1))
+     return true;
 
-        if (player.getX() > bullet.getX())
-            if (player.getY() > bullet.getY())
-                if (player.getY() < bullet.getY() + bullet.getSize())
-                    if (player.getX() < bullet.getX() + bullet.getSize())
-                        return true;
+     if (player.getX() > bullet.getX())
+     if (player.getY() > bullet.getY())
+     if (player.getY() < bullet.getY() + bullet.getSize())
+     if (player.getX() < bullet.getX() + bullet.getSize())
+     return true;
 
-        return false;
-    }
-    * @param player
-    * @param bullet
-    * @return
-    * */
+     return false;
+     }
+     * @param player
+     * @param bullet
+     * @return
+     * */
 }

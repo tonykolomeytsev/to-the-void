@@ -17,7 +17,7 @@ public class Config {
     public static int systemTopPadding;
 
 
-    public static void setUpByActivity(Activity activity){
+    public static void setUpByActivity(Activity activity) {
         Point point = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(point);
         scrWidth = point.x;

@@ -6,7 +6,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
 /**
  * Created by Kolomeytsev Anton on 23.02.2016.
  */
-public class Camera extends GameObject{
+public class Camera extends GameObject {
     private static Camera instance;
     private float expectedX, expectedY, x, y;
     private Visible direction;
@@ -71,6 +71,7 @@ public class Camera extends GameObject{
 
     interface Visible {
         float getX();
+
         float getY();
     }
 }

@@ -10,14 +10,15 @@ import android.view.View;
 import ru.bonsystems.tothevoid.platform.extend.UIModel;
 
 /**
- * @author Kolomeytsev Anton
- * @see ru.bonsystems.tothevoid.platform.GameObject
  * Абстрактное описание игрового экрана.
  * Описаны базовые поля:
  * buffer - Bitmap, в котором хранится содержимое игрового экрана
  * canvas - При помощи него рисуем на buffer
  * transform - Матрица для трансформации buffer во время отрисовки на экран,
  * в основном служит для масштабирования buffer при выводе на экран
+ *
+ * @author Kolomeytsev Anton
+ * @see ru.bonsystems.tothevoid.platform.GameObject
  */
 public abstract class GameScreen extends GameObject implements View.OnTouchListener {
     protected Bitmap buffer;
@@ -34,13 +35,16 @@ public abstract class GameScreen extends GameObject implements View.OnTouchListe
     }
 
     public abstract void update(float delta);
+
     public abstract void render();
+
     public void renderTo(Canvas canvas) {
         canvas.drawBitmap(buffer, transform, paint);
     }
 
     /**
      * Переопределенный от GameObject метод, который не должен быть тут(
+     *
      * @param canvas - ненужная ссылка на Canvas
      */
     public void render(Canvas canvas) {
@@ -48,8 +52,10 @@ public abstract class GameScreen extends GameObject implements View.OnTouchListe
     }
 
     public abstract void onShow();
+
     public abstract void onHide();
-    public boolean onPop(){
+
+    public boolean onPop() {
         return true;
     }
 

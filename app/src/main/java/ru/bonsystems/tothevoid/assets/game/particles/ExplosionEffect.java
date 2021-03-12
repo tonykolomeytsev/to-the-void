@@ -21,11 +21,13 @@ public class ExplosionEffect extends GameObject {
     private int ex_alpha = 255;
     private int lt_alpha = 128;
 
-    public ExplosionEffect(Player player, CompleteListener listener){
+    public ExplosionEffect(Player player, CompleteListener listener) {
         Log.i(this, "Instance");
         this.listener = listener;
-        this.ex_paint.setARGB(255, 255, 255, 255); ex_paint.setAntiAlias(true);
-        this.lt_paint.setARGB(128, 255, 255, 255); lt_paint.setAntiAlias(true);
+        this.ex_paint.setARGB(255, 255, 255, 255);
+        ex_paint.setAntiAlias(true);
+        this.lt_paint.setARGB(128, 255, 255, 255);
+        lt_paint.setAntiAlias(true);
         parent = player;
     }
 

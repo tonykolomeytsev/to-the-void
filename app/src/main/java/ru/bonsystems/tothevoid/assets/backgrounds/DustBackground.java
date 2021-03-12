@@ -236,7 +236,7 @@ public class DustBackground extends GameObject {
     };
     private final Runnable addDust2 = () -> dusts.add(new Dust());
 
-    public DustBackground(){
+    public DustBackground() {
         this.dusts.addAll(Arrays.asList(dustsArray));
         init();
     }
@@ -284,8 +284,10 @@ public class DustBackground extends GameObject {
             Random random = new Random();
             (paint = new Paint()).setColor(Color.WHITE);
             paint.setAntiAlias(true);
-            this.x = Config.RENDER_WIDTH / 2; vx = ((random.nextFloat() * 2f) - 1f) * 2f;
-            this.y = Config.RENDER_HEIGHT / 2; vy = ((random.nextFloat() * 2f) - 1f) * 2f;
+            this.x = Config.RENDER_WIDTH / 2;
+            vx = ((random.nextFloat() * 2f) - 1f) * 2f;
+            this.y = Config.RENDER_HEIGHT / 2;
+            vy = ((random.nextFloat() * 2f) - 1f) * 2f;
             this.alpha = 0f;
             this.radius = 0f;
             this.radiusIncrement = random.nextFloat();
@@ -294,12 +296,15 @@ public class DustBackground extends GameObject {
 
         @Override
         public void update(float delta) {
-            alpha = (alpha < 1f)?(alpha + delta):1f;
+            alpha = (alpha < 1f) ? (alpha + delta) : 1f;
             paint.setAlpha((int) (alpha * 255));
             radius += radiusIncrement * delta * 0.2f;
-            x += vx * delta * 5f; vx *= 1f + (delta * 0.3f);
-            y += vy * delta * 5f; vy *= 1f + (delta * 0.3f);
-            if (x < 0 || x > Config.RENDER_WIDTH || y < 0 || y > Config.RENDER_HEIGHT) alive = false;
+            x += vx * delta * 5f;
+            vx *= 1f + (delta * 0.3f);
+            y += vy * delta * 5f;
+            vy *= 1f + (delta * 0.3f);
+            if (x < 0 || x > Config.RENDER_WIDTH || y < 0 || y > Config.RENDER_HEIGHT)
+                alive = false;
         }
 
         public boolean isAlive() {
@@ -311,7 +316,6 @@ public class DustBackground extends GameObject {
             canvas.drawCircle(x, y, radius, paint);
         }
     }
-
 
 
 }

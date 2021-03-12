@@ -20,7 +20,7 @@ public class SpaceBackground extends GameObject {
     private final int dustsCount;
     private Dust[] dusts;
     private int[] sparksPallet;
-    private float dustRadius;
+    private final float dustRadius;
 
     public SpaceBackground(float dustRadius, int dustsCount) {
         this.dustRadius = dustRadius;

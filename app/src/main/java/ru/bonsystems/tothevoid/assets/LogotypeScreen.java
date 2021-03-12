@@ -29,7 +29,7 @@ public class LogotypeScreen extends GameScreen {
 
     @Override
     public void update(float delta) {
-        elapsedTime+= delta;
+        elapsedTime += delta;
         if (elapsedTime > 3f) {
             Controller.getInstance().getRoot().changeScreen(new StartScreen(), OpacityTransition.getBasic());
         }

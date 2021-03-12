@@ -25,7 +25,7 @@ public class StartTransition extends Transition {
     private Canvas osc;
     private ArrayList<Circle> circles = new ArrayList<>();
 
-    public StartTransition(){
+    public StartTransition() {
         (paint = new Paint()).setAlpha((int) (255 * alpha));
         time1 = 1000;
         time2 = 520;
@@ -51,7 +51,7 @@ public class StartTransition extends Transition {
             circles.add(new Circle());
         }
         if (opacityTransition) {
-            alpha = (alpha + 2f * delta < 1f)?(alpha + 2f * delta):(1f);
+            alpha = Math.min(alpha + 2f * delta, 1f);
             paint.setAlpha((int) (255 * alpha));
             if (alpha == 1f) finish();
 

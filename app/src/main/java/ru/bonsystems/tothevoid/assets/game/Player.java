@@ -81,9 +81,10 @@ public class Player extends Rocket {
     }
 
     private Paint red_paint = new Paint();
+
     private void drawDebug(Canvas canvas) {
         red_paint.setColor(Color.RED);
-        for (int i = 0; i < collisionPoints.length; i++){
+        for (int i = 0; i < collisionPoints.length; i++) {
             canvas.drawCircle(collisionPoints[i].getX(), collisionPoints[i].getY() - Camera.getInstance().getY(), 3, red_paint);
             canvas.drawText("(" + collisionPoints[i].getX() + ";" + collisionPoints[i].getY() + ")", collisionPoints[i].getX(), collisionPoints[i].getY() - Camera.getInstance().getY(), red_paint);
         }

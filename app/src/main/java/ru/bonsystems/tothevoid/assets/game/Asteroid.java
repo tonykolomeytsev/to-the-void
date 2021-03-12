@@ -19,7 +19,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
 /**
  * Created by Kolomeytsev Anton on 23.02.2016.
  */
-public class Asteroid extends GameObject{
+public class Asteroid extends GameObject {
     private final static float MAX_RADIUS = 130f;
     private float maxCornerRadius = 0;
     private float maxX = 0f, maxY = 0f, minX = MAX_RADIUS, minY = MAX_RADIUS;
@@ -44,7 +44,7 @@ public class Asteroid extends GameObject{
     private boolean alive;
 
 
-    public Asteroid(){
+    public Asteroid() {
         /**
          * В конструкторе храним ссылку на StateManager
          * После первого создания создаём Paint белого цвета
@@ -76,15 +76,15 @@ public class Asteroid extends GameObject{
     }
 
     /*
-    * Наконец, астероидам позволено самим себя рисовать! Теперь Добби свободен!
-    * Собственно, сама перерисовка, создана для того чтобы астероиды не лагали, сделано с любовью и по правилам ООП
-    * */
+     * Наконец, астероидам позволено самим себя рисовать! Теперь Добби свободен!
+     * Собственно, сама перерисовка, создана для того чтобы астероиды не лагали, сделано с любовью и по правилам ООП
+     * */
     @Override
     public void render(Canvas canvas) {
         if (x < MAX_RADIUS + Config.RENDER_WIDTH) canvas.drawBitmap(texture, transform, paint);
     }
 
-    private void generate(){
+    private void generate() {
         /**
          * Логическая часть
          * Геренрация всех точек и бла-бла
@@ -102,35 +102,35 @@ public class Asteroid extends GameObject{
         generateBitmap();
     }
 
-    private void determineTheSizePositionAndAngles(){
+    private void determineTheSizePositionAndAngles() {
         /*
-        * Задаём количество углов будущего астероида
-        * */
+         * Задаём количество углов будущего астероида
+         * */
         cornersCount = RANDOM.nextInt(5) + 3;
         /*
-        * Генерируем его угловую скорость.
-        * Я забыл, что тут написано. Главное - работает.
-        * */
+         * Генерируем его угловую скорость.
+         * Я забыл, что тут написано. Главное - работает.
+         * */
         angleVelocity = (float) ((RANDOM.nextFloat() * Math.PI) - Math.PI / 2f) * 12f;
         /*
-        * Задаём координаты астероида
-        * Нужно поместить его за пределы экрана, но не за пределы оперативной памяти, всё пропорционально размерам экрана
-        * */
+         * Задаём координаты астероида
+         * Нужно поместить его за пределы экрана, но не за пределы оперативной памяти, всё пропорционально размерам экрана
+         * */
         x = (Config.RENDER_WIDTH + MAX_RADIUS) + (RANDOM.nextFloat() * MAX_RADIUS * 3f);
         y = RANDOM.nextFloat() * (Camera.getInstance().getAreaHeight() - MAX_RADIUS);
         /*
-        * Скорости для астероидов.
-        * Их нужно сделать пропорциональными тоже
-        * */
+         * Скорости для астероидов.
+         * Их нужно сделать пропорциональными тоже
+         * */
         xVelocity = 400f + GameState.gameSpeed * 200f + RANDOM.nextFloat() * 200f;// RANDOM.nextInt(15) + 25;
         yVelocity = 0;
     }
 
-    private void createAngles(){
+    private void createAngles() {
         /*
-        * Объявляем точки с координатами углов астероида
-        * Количество углов сгенерировано в предыдущей процедуре
-        * */
+         * Объявляем точки с координатами углов астероида
+         * Количество углов сгенерировано в предыдущей процедуре
+         * */
         cornersPoints = new Vector3f[cornersCount];
         /*
          * Циклом проходимся по каждой переменной, хранящей информацию об угле
@@ -140,39 +140,39 @@ public class Asteroid extends GameObject{
         for (int i = 0; i < cornersCount; i++) {
             cornersPoints[i] = new Vector3f();
             /*
-            * переменная angle тут лишь временная. Используется для расчёта позиции угла в Декартовых координатах
-            * */
-            float angle = (float)((Math.PI * 2) / cornersCount) * i;
+             * переменная angle тут лишь временная. Используется для расчёта позиции угла в Декартовых координатах
+             * */
+            float angle = (float) ((Math.PI * 2) / cornersCount) * i;
             /*
-            * Тот самый специфичный .size, которого нет в Point. Является неизменным полем до самой смерти астероида в небытии отрицательных значений X
-            * Это расстояние от условноо центра астероида до угла
-            * */
+             * Тот самый специфичный .size, которого нет в Point. Является неизменным полем до самой смерти астероида в небытии отрицательных значений X
+             * Это расстояние от условноо центра астероида до угла
+             * */
             cornersPoints[i].setZ(MAX_RADIUS - (RANDOM.nextFloat() * (MAX_RADIUS * 0.5f)));
             /*
-            * Полученное расстояние .z мы помножаем на синус и косинус нашего angle, чтобы получить Y и X угла
-            * */
+             * Полученное расстояние .z мы помножаем на синус и косинус нашего angle, чтобы получить Y и X угла
+             * */
             cornersPoints[i].setX((float) (cornersPoints[i].getZ() * Math.cos(angle)));
             cornersPoints[i].setY((float) (cornersPoints[i].getZ() * Math.sin(angle)));
             /*
-            * Заодно ищем максимальное расстояние до угла
-            * Это понадобится для оптимизиции коллизии и генерации текстуры
-            * */
+             * Заодно ищем максимальное расстояние до угла
+             * Это понадобится для оптимизиции коллизии и генерации текстуры
+             * */
 
-            if (maxCornerRadius < cornersPoints[i].getZ()) maxCornerRadius = cornersPoints[i].getZ();
+            if (maxCornerRadius < cornersPoints[i].getZ())
+                maxCornerRadius = cornersPoints[i].getZ();
         }
 
         angle = (float) (RANDOM.nextFloat() * Math.PI * 2f);
     }
 
-    private void findTheCenter(){
+    private void findTheCenter() {
         /*
-        * Находим условный центр фигуры
-        * Вокруг него мы будем вращать и ещё... что-то
-        * */
+         * Находим условный центр фигуры
+         * Вокруг него мы будем вращать и ещё... что-то
+         * */
         center = new Vector3f();
         center.setX(maxCornerRadius);
         center.setY(maxCornerRadius);
-
     }
 
     /**
@@ -182,7 +182,7 @@ public class Asteroid extends GameObject{
      * а это недопустимо в расчётах коллизии. Всё, что меньше нуля всегда при пересечении возвратит false,
      * поэтому я смещаю все координаты на максимальную возможную координату, т.к. астероид ещё будет вращаться
      **/
-    private void moveAllPointsToTheCenter(){
+    private void moveAllPointsToTheCenter() {
         for (int i = 0; i < cornersCount; i++) {
             cornersPoints[i].setX(cornersPoints[i].getX() + center.getX());
             cornersPoints[i].setY(cornersPoints[i].getY() + center.getY());
@@ -195,15 +195,15 @@ public class Asteroid extends GameObject{
 
         polygon.reset();
         polygon.moveTo(cornersPoints[0].getX(), cornersPoints[0].getY());
-        for (int i = 0; i < cornersCount - 1; i++){
+        for (int i = 0; i < cornersCount - 1; i++) {
             polygon.lineTo(cornersPoints[i].getX(), cornersPoints[i].getY());
         }
         polygon.lineTo(cornersPoints[cornersCount - 1].getX(), cornersPoints[cornersCount - 1].getY());
 
         /*
-        * Делаем эффект фотошопа "обтравка по фигуре"
-        * xFerPaint закэширован мною для оптимизации
-        **/
+         * Делаем эффект фотошопа "обтравка по фигуре"
+         * xFerPaint закэширован мною для оптимизации
+         **/
         Bitmap scaledDoge = null;
         if (GameState.jokeDoge) {
             scaledDoge = Bitmap.createScaledBitmap(textures.get("doge"), (int) (maxCornerRadius * 2f), (int) (maxCornerRadius * 2f), true);
@@ -216,10 +216,10 @@ public class Asteroid extends GameObject{
     }
 
     /*
-    * Обновление состояния, т.е. всё теперь сделано с отдделением Отображения от Логики
-    * По непонятным причинам, без этого игра лагает.
-    * UPD 23/02/2016: Лагает из-за небезопасной многопоточности. Теперь исправлено
-    * */
+     * Обновление состояния, т.е. всё теперь сделано с отдделением Отображения от Логики
+     * По непонятным причинам, без этого игра лагает.
+     * UPD 23/02/2016: Лагает из-за небезопасной многопоточности. Теперь исправлено
+     * */
     private void incrementRotationAndPositionVariables(float delta) {
         angle += angleVelocity * delta; // "доповорот"
         x -= xVelocity * delta;
@@ -228,7 +228,7 @@ public class Asteroid extends GameObject{
 
     public void rotateCollisionPoints() {
         for (int i = 0; i < cornersCount; i++) {
-            float enumerateAngle = (float)((Math.PI * 2) / cornersCount) * i;
+            float enumerateAngle = (float) ((Math.PI * 2) / cornersCount) * i;
             cornersPoints[i].setX((float) (cornersPoints[i].getZ() * Math.cos(enumerateAngle + (angle / 57.2957795786f))) + center.getX());
             cornersPoints[i].setY((float) (cornersPoints[i].getZ() * Math.sin(enumerateAngle + (angle / 57.2957795786f))) + center.getY());
         }
@@ -243,9 +243,10 @@ public class Asteroid extends GameObject{
     }
 
     private Paint redPaint = new Paint();
+
     private void drawDebug(Canvas canvas) {
         redPaint.setColor(Color.RED);
-        for (int i = 0; i < cornersCount; i++){
+        for (int i = 0; i < cornersCount; i++) {
             canvas.drawCircle(cornersPoints[i].getX() + x, cornersPoints[i].getY() + y - Camera.getInstance().getY(), 3, redPaint);
             canvas.drawText("(" + cornersPoints[i].getX() + ";" + cornersPoints[i].getY() + ")", cornersPoints[i].getX() + x, cornersPoints[i].getY() + y - Camera.getInstance().getY(), redPaint);
         }
@@ -254,9 +255,9 @@ public class Asteroid extends GameObject{
     }
 
     /*
-    * Имплементированные методы, которые могут понадобится в случае потребы в няшных эффектах частиц и взрывах
-    * Скорее всего, здесь есть что-то важное.
-    * */
+     * Имплементированные методы, которые могут понадобится в случае потребы в няшных эффектах частиц и взрывах
+     * Скорее всего, здесь есть что-то важное.
+     * */
     public Vector3f[] getPoints() {
         return cornersPoints;
     }

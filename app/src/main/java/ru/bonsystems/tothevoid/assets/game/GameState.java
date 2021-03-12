@@ -31,7 +31,7 @@ public class GameState {
         score = 0f;
         jokeDoge = false;
         String someHighscore = DataStorage.getInstance().get("highscore");
-        highscore = (someHighscore == null)? 0: Integer.parseInt(someHighscore);
+        highscore = (someHighscore == null) ? 0 : Integer.parseInt(someHighscore);
         accumulatedScore = 0f;
         isHighscoreNow = false;
     }
@@ -45,7 +45,8 @@ public class GameState {
 
         accumulatedScore += increment;
         if (accumulatedScore > 500f) {
-            if (scoreHalfThousandListener != null) scoreHalfThousandListener.OnScoreEqualsHalfThousand();
+            if (scoreHalfThousandListener != null)
+                scoreHalfThousandListener.OnScoreEqualsHalfThousand();
             accumulatedScore = 0f;
         }
     }
