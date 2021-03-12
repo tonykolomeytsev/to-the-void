@@ -1,5 +1,6 @@
 package ru.bonsystems.tothevoid.assets.game;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -59,6 +60,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         initGameObjects();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initGameObjects() {
         player = new Player();
         Camera.getInstance().setDirection(player);
@@ -80,7 +82,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         asteroids = new Asteroid[7];
         for (int i = 0; i < asteroids.length; i++) {
             asteroids[i] = new Asteroid();
-            asteroids[i].setX(Config.RENDER_WIDTH * 2f);
+            asteroids[i].setX(Config.RENDER_WIDTH * 3f);
         }
         collider = new Collider(() -> {
             DataStorage.getInstance()
@@ -97,14 +99,11 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
 
                 }
             };
-            debugger.addOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        delay = !delay;
-                    }
-                    return true;
+            debugger.addOnTouchListener((view, motionEvent) -> {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    delay = !delay;
                 }
+                return true;
             }).setArea(new Control.Area(100, 100, 100, 100));
             uiModel.addControl(debugger);
         }
@@ -137,7 +136,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
 
     private void initSystems() {
         GameState.reset();
-        Camera.getInstance().setArea(1300, 1000);
+        Camera.getInstance().setArea(1300, 1100);
 
         uiModel = new UIModel();
         transform = new Matrix();
@@ -281,7 +280,6 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         public PlayerControl() {
             ay = 0f;
             dy = 0f;
-
         }
 
         public void update(float delta) {
@@ -324,8 +322,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         }
     }
 
-    class PauseButton extends Control {
-
+    private static class PauseButton extends Control {
 
         @Override
         public void init() {
