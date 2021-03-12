@@ -14,6 +14,7 @@ public class Config {
     public final static float RENDER_WIDTH = 1280f;
     public static float RENDER_HEIGHT;
     public static float scaleFactor;
+    public static int systemTopPadding;
 
 
     public static void setUpByActivity(Activity activity){

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import ru.bonsystems.tothevoid.assets.utils.Pallete;
+import ru.bonsystems.tothevoid.platform.Config;
 import ru.bonsystems.tothevoid.platform.GameObject;
 
 /**
@@ -32,13 +33,14 @@ public class ScoreGUI extends GameObject{
     @Override
     public void update(float delta) {
         score = String.valueOf((int) GameState.score);
-        highscore = String.valueOf((int) GameState.highscore);
+        highscore = String.valueOf(GameState.highscore);
     }
 
     @Override
     public void render(Canvas canvas) {
-        canvas.drawText(score, 40f, 80f, scorePaint);
-        canvas.drawText(highscore, 90f, 140f, highScorePaint);
-        canvas.drawBitmap(hsIcon, 45f, 110f, null);
+        final float topOffset = Config.systemTopPadding + 50f;
+        canvas.drawText(score, 40f, topOffset, scorePaint);
+        canvas.drawText(highscore, 90f, topOffset + 60f, highScorePaint);
+        canvas.drawBitmap(hsIcon, 45f, topOffset + 30f, null);
     }
 }

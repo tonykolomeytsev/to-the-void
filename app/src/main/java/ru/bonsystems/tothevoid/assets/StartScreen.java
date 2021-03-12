@@ -1,5 +1,6 @@
 package ru.bonsystems.tothevoid.assets;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -33,6 +34,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
     private final SettingsButton settingsButton;
     private final ScoreGUI scoreGui;
 
+    @SuppressLint("ClickableViewAccessibility")
     public StartScreen() {
         backBackground = new DustBackground();
         logo = new GameObject() {
@@ -70,7 +72,6 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
         };
         touchToStart = new GameObject() {
             private float incrementOpacity = 0f;
-            private float opacity = 1f;
 
             @Override
             public void init() {
@@ -80,7 +81,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
                 paint.setAntiAlias(true);
                 texture = loadTextureFromAssets("start_menu/touch_to_start.png");
                 transform = new Matrix();
-                float startButtonY = 720f / 4f * 3f;
+                float startButtonY = Config.RENDER_HEIGHT / 4f * 3f;
                 transform.setTranslate(
                         Config.RENDER_WIDTH / 2 - texture.getWidth() / 2,
                         startButtonY + (texture.getHeight() / 2f)
@@ -90,7 +91,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
             @Override
             public void update(float delta) {
                 incrementOpacity += 5f * delta;
-                opacity = (float) Math.abs(Math.sin(incrementOpacity));
+                float opacity = (float) Math.abs(Math.sin(incrementOpacity));
                 paint.setAlpha((int) (255 * opacity));
             }
 
@@ -104,23 +105,17 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
          * запускать игру, открывать настройки и т.д.
          * */
         (startButton = new StartButton())
-                .addOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) startGame();
-                        return true;
-                    }
+                .addOnTouchListener((view, motionEvent) -> {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) startGame();
+                    return true;
                 });
         (settingsButton = new SettingsButton())
-                .addOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                            Controller.getInstance().getPresenter().setOnTouchListener(null);
-                            Controller.getInstance().getRoot().pushScreen(new SettingsScreen(), new StartTransition());
-                        }
-                        return true;
+                .addOnTouchListener((view, motionEvent) -> {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                        Controller.getInstance().getPresenter().setOnTouchListener(null);
+                        Controller.getInstance().getRoot().pushScreen(new SettingsScreen(), new StartTransition());
                     }
+                    return true;
                 });
         scoreGui = new ScoreGUI();
 
@@ -199,7 +194,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
         return true;
     }
 
-    class StartButton extends Control {
+    private static class StartButton extends Control {
         private float renderCenterX;
         private float renderCenterY;
         private float renderRadius;
@@ -207,8 +202,8 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
 
         @Override
         public void init() {
-            renderCenterX = 1280f / 2f;
-            renderCenterY = 720f / 4f * 3f;
+            renderCenterX = Config.RENDER_WIDTH / 2f;
+            renderCenterY = Config.RENDER_HEIGHT / 4f * 3f;
             renderRadius = 60f;
             radiusIncrement = 0f;
 
@@ -249,7 +244,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
         }
     }
 
-    class SettingsButton extends Control {
+    private static class SettingsButton extends Control {
         private float renderCenterX;
         private float renderCenterY;
         private float renderRadius;
@@ -299,7 +294,7 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
         }
     }
 
-    class ScoreGUI extends GameObject {
+    private static class ScoreGUI extends GameObject {
         private Bitmap hsIcon;
         private String score, highscore;
         Paint scorePaint, highScorePaint;
@@ -321,14 +316,15 @@ public class StartScreen extends GameScreen implements View.OnTouchListener {
         @Override
         public void update(float delta) {
             score = "Name unknown";
-            highscore = String.valueOf((int) GameState.highscore);
+            highscore = String.valueOf(GameState.highscore);
         }
 
         @Override
         public void render(Canvas canvas) {
-            canvas.drawText(score, 40f, 80f, scorePaint);
-            canvas.drawText(highscore, 90f, 140f, highScorePaint);
-            canvas.drawBitmap(hsIcon, 45f, 110f, null);
+            final float topOffset = Config.systemTopPadding + 50f;
+            canvas.drawText(score, 40f, topOffset, scorePaint);
+            canvas.drawText(highscore, 90f, topOffset + 60f, highScorePaint);
+            canvas.drawBitmap(hsIcon, 45f, topOffset + 30f, null);
         }
     }
 }

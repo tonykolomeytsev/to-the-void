@@ -16,7 +16,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
  */
 public class DustBackground extends GameObject {
 
-    private Dust[] dustsArray = new Dust[]{
+    private final Dust[] dustsArray = new Dust[]{
             new Dust(552.8179f, 669.7624f, 1.0f, 2.131869f, 0.70747954f, -5.289813f, 18.795027f),
             new Dust(19.12167f, 276.62756f, 1.0f, 2.1042023f, 0.7108814f, -37.707405f, -5.0633893f),
             new Dust(171.71393f, 544.82117f, 1.0f, 1.7049491f, 0.59753096f, -28.500166f, 11.248311f),
