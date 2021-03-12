@@ -15,16 +15,22 @@ import ru.bonsystems.tothevoid.platform.GameObject;
  * Created by Kolomeytsev Anton on 24.02.2016.
  */
 public class SmokeEffect extends GameObject {
-    private float ALPHA_DECREMENT = 15f;
-    private Smoke[] train = new Smoke[14];
-    private Rocket parent;
-    private static Random random = new Random();
+    private final float ALPHA_DECREMENT;
+    private final float SPEED_DECREMENT;
+    private final Smoke[] train = new Smoke[14];
+    private final Rocket parent;
+    private static final Random random = new Random();
     private float halfHeightTranslation = 16f;
 
     public SmokeEffect(Rocket parent) {
         this.parent = parent;
-        if (parent instanceof Player) ALPHA_DECREMENT = 15f;
-        else ALPHA_DECREMENT = 360f;
+        if (parent instanceof Player) {
+            ALPHA_DECREMENT = 15f;
+            SPEED_DECREMENT = 1f;
+        } else {
+            ALPHA_DECREMENT = 480f;
+            SPEED_DECREMENT = 0.75f;
+        }
         initTrain(); // TRAIN переводится как "шлейф", а не только как "поезд".
     }
 
@@ -38,18 +44,18 @@ public class SmokeEffect extends GameObject {
 
     @Override
     public void render(Canvas canvas) {
-        for (int i = 0; i < train.length; i++) {
-            train[i].render(canvas);
+        for (Smoke smoke : train) {
+            smoke.render(canvas);
         }
     }
 
     @Override
     public void update(float delta) {
-        for (int i = 0; i < train.length; i++) {
-            train[i].update(delta);
-            if ((train[i].getX() < -30) || (train[i].alpha < 10)) {
-                train[i].fillValues();
-                train[i].setCoordinates((int) parent.getX(), (int) (parent.getY() + halfHeightTranslation));
+        for (Smoke smoke : train) {
+            smoke.update(delta);
+            if ((smoke.getX() < -30) || (smoke.alpha < 10)) {
+                smoke.fillValues();
+                smoke.setCoordinates((int) parent.getX(), (int) (parent.getY() + halfHeightTranslation));
             }
         }
     }
@@ -88,7 +94,7 @@ public class SmokeEffect extends GameObject {
             Random random = new Random();
             alpha = 255;
             radius = random.nextInt(3) + 5;
-            xSpeed = random.nextInt(7) + 13;
+            xSpeed = (int) ((random.nextInt(7) + 13) * SPEED_DECREMENT);
             xSpeed *= 30;
             ySpeed = random.nextInt(4) - 2;
         }

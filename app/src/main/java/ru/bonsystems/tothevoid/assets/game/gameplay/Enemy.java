@@ -23,10 +23,10 @@ public class Enemy extends Rocket {
     private SmokeEffect smokeEffect;
     private FireEffect fireEffect;
     private float vX, vY;
-    private Player player;
+    private final Player player;
     private int halfHeight;
-    private Random random = new Random();
-    private ArrayList<Bullet> bullets = new ArrayList<>();
+    private final Random random = new Random();
+    private final ArrayList<Bullet> bullets = new ArrayList<>();
     public boolean alive = true;
 
     public Enemy(Player player) {
@@ -121,7 +121,6 @@ public class Enemy extends Rocket {
         public Bullet(Rocket parent) {
             alive = true;
             (paint = new Paint()).setAntiAlias(true);
-            paint.setColor(Pallete.BULLETS_COLOR);
             radiusIncrement = 0;
             x = parent.getX();
             y = parent.getY() + halfHeight;
@@ -138,6 +137,11 @@ public class Enemy extends Rocket {
 
         @Override
         public void render(Canvas canvas) {
+            paint.setColor(Pallete.BULLETS_AREAL_COLOR);
+            paint.setAlpha(128);
+            canvas.drawCircle(x, y - Camera.getInstance().getY(), 5f + (float) Math.sin(radiusIncrement) * 10f, paint);
+            paint.setColor(Pallete.BULLETS_COLOR);
+            paint.setAlpha(255);
             canvas.drawCircle(x, y - Camera.getInstance().getY(), 5f + (float) Math.sin(radiusIncrement) * 5f, paint);
         }
 
