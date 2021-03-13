@@ -9,6 +9,9 @@ buildscript {
                 lifecycleCommonJava8: "androidx.lifecycle:lifecycle-common-java8:2.2.0",
                 lifecycleExtensions : "androidx.lifecycle:lifecycle-extensions:2.2.0"
         ]
+        jetbrains = [
+                annotations         : "org.jetbrains:annotations:16.0.2"
+        ]
     }
     repositories {
         google()

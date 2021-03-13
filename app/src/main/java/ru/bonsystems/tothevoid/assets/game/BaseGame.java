@@ -39,7 +39,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
     private Player player;
     private Enemy enemy;
     private GameObject particleStorm;
-    private Collider collider;
+    private Collisions collisions;
 
     private Control playerControlArea;
     private PlayerControl playerControlProcessor;
@@ -83,7 +83,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
             asteroids[i] = new Asteroid();
             asteroids[i].setX(Config.RENDER_WIDTH * 3f);
         }
-        collider = new Collider(() -> {
+        collisions = new Collisions(() -> {
             DataStorage.getInstance()
                     .set("highscore", String.valueOf(GameState.highscore))
                     .apply();
@@ -180,7 +180,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
             ArrayList<Enemy.Bullet> bullets = enemy.getBullets();
             for (Enemy.Bullet bullet : bullets)
                 if (bullet.isAlive())
-                    collider.collideWithBullet(player, bullet);
+                    collisions.collideWithBullet(player, bullet);
 
             if (enemy.endScenario()) enemy = null;
         }
@@ -205,9 +205,9 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
                 if (enemy == null) asteroids[i] = new Asteroid();
             }
             asteroids[i].update(delta);
-            if (collider != null) {
-                if (collider.collideObjects(asteroids[i], player)) {
-                    collider = null;
+            if (collisions != null) {
+                if (collisions.collideObjects(asteroids[i], player)) {
+                    collisions = null;
                 }
             }
         }
