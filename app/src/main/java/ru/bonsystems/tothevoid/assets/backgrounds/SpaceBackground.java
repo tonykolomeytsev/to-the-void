@@ -8,6 +8,7 @@ import java.util.Random;
 
 import ru.bonsystems.tothevoid.assets.game.Camera;
 import ru.bonsystems.tothevoid.assets.game.GameState;
+import ru.bonsystems.tothevoid.assets.utils.Pallete;
 import ru.bonsystems.tothevoid.platform.GameObject;
 
 /**
@@ -21,6 +22,7 @@ public class SpaceBackground extends GameObject {
     private Dust[] dusts;
     private int[] sparksPallet;
     private final float dustRadius;
+    private Flashlight flashlight;
 
     public SpaceBackground(float dustRadius, int dustsCount) {
         this.dustRadius = dustRadius;
@@ -52,23 +54,33 @@ public class SpaceBackground extends GameObject {
             }
             dust.update(delta);
         }
+
+        if (flashlight != null && flashlight.isAlive()) {
+            flashlight.update(delta);
+        } else if (random.nextFloat() < 0.005f) {
+            flashlight = new Flashlight();
+        }
     }
 
     @Override
     public void render(Canvas canvas) {
-        for (int i = 0; i < dusts.length; i++) {
-            dusts[i].render(canvas);
+        for (Dust dustPiece : dusts) {
+            dustPiece.render(canvas);
+        }
+        if (flashlight != null && flashlight.isAlive()) {
+            flashlight.render(canvas);
         }
     }
 
     private class Dust extends GameObject {
-
-        private Paint dustPaint;
-        private float alpha, radius, vx, vy;
+        private final float radius;
+        private float alpha;
+        private float vx;
+        private float vy;
         private boolean alive;
 
         public Dust(boolean rand, float dustRadius) {
-            this.radius = 0.2f + dustRadius * random.nextFloat();
+            radius = 0.2f + dustRadius * random.nextFloat();
             if (rand) {
                 this.x = camera.getAreaWidth() * 2f * random.nextFloat();
             } else {
@@ -80,9 +92,9 @@ public class SpaceBackground extends GameObject {
 
         @Override
         public void init() {
-            dustPaint = new Paint();
-            dustPaint.setColor(sparksPallet[random.nextInt(sparksPallet.length)]);
-            dustPaint.setAntiAlias(true);
+            paint = new Paint();
+            paint.setColor(sparksPallet[random.nextInt(sparksPallet.length)]);
+            paint.setAntiAlias(true);
             vx = ((random.nextFloat() * 1f) - 10f) * (5f + radius) + (5f + radius) * GameState.gameSpeed / 2f;
             vy = 0f;
             this.alpha = 0.8f + (0.2f * random.nextFloat());
@@ -91,7 +103,7 @@ public class SpaceBackground extends GameObject {
 
         @Override
         public void update(float delta) {
-            dustPaint.setAlpha((int) (alpha * 255));
+            paint.setAlpha((int) (alpha * 255));
             x += (vx * delta * 3f);
             y += (vy * delta * 5f);
             if (x < 0) alive = false;
@@ -104,8 +116,32 @@ public class SpaceBackground extends GameObject {
         @Override
         public void render(Canvas canvas) {
             float translatedY = (y - Camera.getInstance().getY() * radius * 0.15f);
-            canvas.drawCircle(x, translatedY, radius, dustPaint);
+            canvas.drawCircle(x, translatedY, radius, paint);
+        }
+    }
+
+    private class Flashlight extends GameObject {
+
+        private int alpha = (int) (28 + 60 * random.nextFloat());
+
+        public Flashlight() {
+            paint = new Paint();
+            paint.setColor(Pallete.ACCENT_LIGHT);
         }
 
+        @Override
+        public void update(float delta) {
+            alpha *= 0.92f;
+        }
+
+        @Override
+        public void render(Canvas canvas) {
+            paint.setAlpha(alpha);
+            canvas.drawPaint(paint);
+        }
+
+        public boolean isAlive() {
+            return alpha > 2;
+        }
     }
 }
