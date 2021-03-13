@@ -16,7 +16,6 @@ import ru.bonsystems.tothevoid.assets.game.jokes.DeathStar;
 import ru.bonsystems.tothevoid.assets.game.jokes.Joke;
 import ru.bonsystems.tothevoid.assets.game.particles.ExplosionEffect;
 import ru.bonsystems.tothevoid.assets.game.particles.ParticleStorm;
-import ru.bonsystems.tothevoid.assets.game.screens.GameOverHighscoreScreen;
 import ru.bonsystems.tothevoid.assets.game.screens.GameOverScreen;
 import ru.bonsystems.tothevoid.assets.game.screens.PauseScreen;
 import ru.bonsystems.tothevoid.assets.utils.Pallete;
@@ -136,7 +135,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
 
     private void initSystems() {
         GameState.reset();
-        Camera.getInstance().setArea(1300, 1100);
+        Camera.getInstance().setArea(Config.MAP_WIDTH, Config.MAP_HEIGHT);
 
         uiModel = new UIModel();
         transform = new Matrix();
@@ -171,7 +170,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
         if (joke != null) if (joke.isAlive()) joke.update(delta);
         else joke = null;
 
-        GameState.gameSpeed += delta / 50f;
+        GameState.gameSpeed += delta / 100f;
         GameState.incrementScore(50f * delta);
     }
 
@@ -250,7 +249,7 @@ public class BaseGame extends GameScreen implements View.OnTouchListener {
                 i++;
                 if (i == 1) {
                     System.out.println(Controller.getInstance().getRoot().getScreenStack());
-                    GameScreen gameScreen = GameState.isHighscoreNow() ? new GameOverHighscoreScreen() : new GameOverScreen();
+                    GameScreen gameScreen = new GameOverScreen(GameState.isHighscoreNow());
                     Controller.getInstance().getRoot().changeScreen(gameScreen, OpacityTransition.getBasic());
                 }
             }

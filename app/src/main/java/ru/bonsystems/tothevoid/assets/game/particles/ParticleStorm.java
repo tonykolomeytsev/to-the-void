@@ -17,7 +17,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
 public class ParticleStorm extends GameObject {
 
     private Particle[] particles;
-    private static Random random = new Random();
+    private static final Random random = new Random();
     private int particleCount;
 
     @Override
@@ -42,11 +42,11 @@ public class ParticleStorm extends GameObject {
     @Override
     public void update(float delta) {
         particleCount = (int) (GameState.gameSpeed * 7f);
-        particleCount = (particleCount <= particles.length) ? particleCount : particles.length;
+        particleCount = Math.min(particleCount, particles.length);
         for (int i = 0; i < particleCount; i++) {
             if (!particles[i].isAlive()) particles[i] = new Particle(
                     Config.RENDER_WIDTH,
-                    Config.RENDER_HEIGHT * random.nextFloat(),
+                    Config.MAP_HEIGHT * random.nextFloat(),
                     100f,
                     1500f + random.nextFloat() * 300f
             );

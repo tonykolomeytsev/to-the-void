@@ -15,6 +15,8 @@ public class Config {
     public static float RENDER_HEIGHT;
     public static float scaleFactor;
     public static int systemTopPadding;
+    public final static float MAP_WIDTH = 1300f;
+    public final static float MAP_HEIGHT = 1100f;
 
 
     public static void setUpByActivity(Activity activity) {

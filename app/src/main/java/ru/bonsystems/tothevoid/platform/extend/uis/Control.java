@@ -15,7 +15,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
  * Created by Kolomeytsev Anton
  */
 public abstract class Control extends GameObject {
-    protected volatile ArrayList<View.OnTouchListener> listeners = new ArrayList<>();
+    protected final ArrayList<View.OnTouchListener> listeners = new ArrayList<>();
     protected Area area;
     private static Paint debugPaint = new Paint();
 

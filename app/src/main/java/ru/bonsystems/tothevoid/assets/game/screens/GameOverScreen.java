@@ -1,9 +1,12 @@
 package ru.bonsystems.tothevoid.assets.game.screens;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.ColorInt;
 
 import ru.bonsystems.tothevoid.R;
 import ru.bonsystems.tothevoid.assets.StartScreen;
@@ -25,12 +28,15 @@ import ru.bonsystems.tothevoid.platform.extend.uis.Control;
 public class GameOverScreen extends GameScreen implements View.OnTouchListener {
 
     private final Label scoreHeader;
+    private final Label newRecordHeader;
     private final Label buttonMenu;
     private final Label buttonRestart;
-    private Paint darkPaint;
-    private GameObject dustBackground;
+    private final GameObject dustBackground;
+    private final boolean isHighScore;
 
-    public GameOverScreen() {
+    @SuppressLint("ClickableViewAccessibility")
+    public GameOverScreen(boolean isHighScore) {
+        this.isHighScore = isHighScore;
         dustBackground = new DustBackground();
         x = Config.RENDER_WIDTH / 2f;
         y = Config.RENDER_HEIGHT / 2f;
@@ -38,36 +44,35 @@ public class GameOverScreen extends GameScreen implements View.OnTouchListener {
         paint.setAntiAlias(true);
         paint.setColor(Pallete.ACCENT_LIGHT);
 
-        darkPaint = new Paint();
-        paint.setAntiAlias(true);
-        darkPaint.setColor(Pallete.SPACE_DARK);
-
-        (scoreHeader = new Label((int) GameState.score + "M", 180f, x, y)).setTestAlign(Paint.Align.CENTER);
-        (buttonMenu = new Label(Controller.getInstance().getString(R.string.pause_menu), 45f, x, y + 180f)).setTestAlign(Paint.Align.CENTER).addOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.i(this, "Menu");
-                    Controller.getInstance().getPresenter().setOnTouchListener(null);
-                    while (!(Controller.getInstance().getRoot().getScreenStack().peek() instanceof StartScreen)) {
-                        Controller.getInstance().getRoot().popScreen();
+        @ColorInt
+        final int textColor = (isHighScore) ? 0xfff1c101 : Pallete.ACCENT_LIGHT;
+        final String newRecordCongrats = Controller.getInstance().getString(R.string.new_record_congratulations);
+        (newRecordHeader = new Label(newRecordCongrats, 45f, x, y - 164f))
+                .setTextAlign(Paint.Align.CENTER)
+                .setTextColor(textColor);
+        (scoreHeader = new Label((int) GameState.score + "M", 180f, x, y))
+                .setTextAlign(Paint.Align.CENTER)
+                .setTextColor(textColor);
+        (buttonMenu = new Label(Controller.getInstance().getString(R.string.pause_menu), 45f, x, y + 180f))
+                .setTextAlign(Paint.Align.CENTER)
+                .addOnTouchListener((view, motionEvent) -> {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        Controller.getInstance().getPresenter().setOnTouchListener(null);
+                        while (!(Controller.getInstance().getRoot().getScreenStack().peek() instanceof StartScreen)) {
+                            Controller.getInstance().getRoot().popScreen();
+                        }
                     }
-                }
-                return true;
-            }
-        });
-        (buttonRestart = new Label(Controller.getInstance().getString(R.string.pause_restart), 45f, x, y + 100f)).setTestAlign(Paint.Align.CENTER).addOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.i(this, "Restart");
-                    Controller.getInstance().getPresenter().setOnTouchListener(null);
-                    Controller.getInstance().getRoot().changeScreen(new BaseGame());
-                }
-                return true;
-            }
-        });
-
+                    return true;
+                });
+        (buttonRestart = new Label(Controller.getInstance().getString(R.string.pause_restart), 45f, x, y + 100f))
+                .setTextAlign(Paint.Align.CENTER)
+                .addOnTouchListener((view, motionEvent) -> {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        Controller.getInstance().getPresenter().setOnTouchListener(null);
+                        Controller.getInstance().getRoot().changeScreen(new BaseGame());
+                    }
+                    return true;
+                });
         (uiModel = new UIModel())
                 .addControl(buttonMenu)
                 .addControl(buttonRestart);
@@ -80,31 +85,29 @@ public class GameOverScreen extends GameScreen implements View.OnTouchListener {
 
     @Override
     public void render() {
-        canvas.drawRect(0f, 0f, Config.RENDER_WIDTH, Config.RENDER_HEIGHT, darkPaint);
+        canvas.drawColor(Pallete.SPACE_DARK);
         dustBackground.render(canvas);
-        //canvas.drawCircle(x, y, Config.rndHeight * 0.3333f, paint);
 
+        if (isHighScore) newRecordHeader.render(canvas);
         scoreHeader.render(canvas);
         buttonMenu.render(canvas);
         buttonRestart.render(canvas);
     }
 
     @Override
-    public void onShow() {
-    }
+    public void onShow() { /* no-op */ }
 
     @Override
-    public void onHide() {
+    public void onHide() { /* no-op */ }
 
-    }
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         uiModel.onTouch(motionEvent);
         return true;
     }
 
-    class Label extends Control {
+    private static class Label extends Control {
         final String label;
 
         public Label(String label, float size) {
@@ -113,7 +116,6 @@ public class GameOverScreen extends GameScreen implements View.OnTouchListener {
             paint.setAntiAlias(true);
             paint.setTypeface(loadTypefaceFromAssets("fonts/caviar.ttf"));
             paint.setTextSize(size);
-
         }
 
         public Label(String label, float size, float x, float y) {
@@ -121,34 +123,30 @@ public class GameOverScreen extends GameScreen implements View.OnTouchListener {
             setPosition(x, y);
         }
 
-        public Label setPosition(float x, float y) {
+        public void setPosition(float x, float y) {
             this.x = x;
             this.y = y;
-
-
             setArea(new Area(
                     x - 150f, y - 30f, 300f, 60f
             ));
-
-            return this;
         }
 
-        public Label setTestAlign(Paint.Align a) {
+        public Label setTextAlign(Paint.Align a) {
             paint.setTextAlign(a);
             return this;
         }
 
-        @Deprecated
-        @Override
-        public void update(float delta) {
+        public Label setTextColor(int color) {
+            paint.setColor(color);
+            return this;
         }
+
+        @Override
+        public void update(float delta) { /* no-op */ }
 
         @Override
         public void render(Canvas canvas) {
             canvas.drawText(label, x, y, paint);
-            /*Config.debugMode = true;
-            super.render(canvas);
-            Config.debugMode = false;*/
         }
     }
 }
