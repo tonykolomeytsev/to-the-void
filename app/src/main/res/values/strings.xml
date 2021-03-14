@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">To the Void :: Remastered</string>
+    <string name="app_name">To the Void Remastered</string>
     <string name="settings_header">Конфигурация</string>
     <string name="pref_1">Разрешение экрана: </string>
     <string name="pref_2">Разрешение отрисовки: </string>
