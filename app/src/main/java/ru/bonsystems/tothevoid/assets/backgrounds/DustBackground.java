@@ -16,6 +16,7 @@ import ru.bonsystems.tothevoid.platform.GameObject;
  */
 public class DustBackground extends GameObject {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final Dust[] dustsArray = new Dust[]{
             new Dust(552.8179f, 669.7624f, 1.0f, 2.131869f, 0.70747954f, -5.289813f, 18.795027f),
             new Dust(19.12167f, 276.62756f, 1.0f, 2.1042023f, 0.7108814f, -37.707405f, -5.0633893f),
@@ -226,15 +227,8 @@ public class DustBackground extends GameObject {
             new Dust(639.8366f, 359.79755f, 0.033333335f, 0.0064576487f, 0.96864724f, -0.9902053f, -1.2269274f),
             new Dust(640.2187f, 359.76978f, 0.033333335f, 0.003407452f, 0.51111776f, 1.325297f, -1.3952141f)
     };
-
-    private ArrayList<Dust> dusts = new ArrayList<>();
-    private final Runnable addDust1 = new Runnable() {
-        @Override
-        public void run() {
-            waitIfFaster(addDust2, 500);
-        }
-    };
-    private final Runnable addDust2 = () -> dusts.add(new Dust());
+    private final static Random random = new Random();
+    private final ArrayList<Dust> dusts = new ArrayList<>();
 
     public DustBackground() {
         this.dusts.addAll(Arrays.asList(dustsArray));
@@ -250,7 +244,7 @@ public class DustBackground extends GameObject {
                 dusts.remove(dust);
             }
         }
-        async(addDust1);
+        dusts.add(new Dust());
     }
 
     @Override
@@ -260,7 +254,7 @@ public class DustBackground extends GameObject {
         }
     }
 
-    private class Dust extends GameObject {
+    private static class Dust extends GameObject {
 
         private float alpha, radius, radiusIncrement, vx, vy;
         private boolean alive;
@@ -281,8 +275,8 @@ public class DustBackground extends GameObject {
 
         @Override
         public void init() {
-            Random random = new Random();
-            (paint = new Paint()).setColor(Color.WHITE);
+            paint = new Paint();
+            paint.setColor(Color.WHITE);
             paint.setAntiAlias(true);
             this.x = Config.RENDER_WIDTH / 2;
             vx = ((random.nextFloat() * 2f) - 1f) * 2f;
