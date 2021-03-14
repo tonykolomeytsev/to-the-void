@@ -22,7 +22,6 @@ import ru.bonsystems.tothevoid.platform.GameObject;
 public class Asteroid extends GameObject {
     private final static float MAX_RADIUS = 130f;
     private float maxCornerRadius = 0;
-    private float maxX = 0f, maxY = 0f, minX = MAX_RADIUS, minY = MAX_RADIUS;
 
     private int cornersCount;
     private float angleVelocity;
@@ -31,10 +30,8 @@ public class Asteroid extends GameObject {
     private float x;
     private float y;
     private Vector3f center;
-    private Vector3f ncenter = new Vector3f();
     private Vector3f[] cornersPoints;
-    private Path polygon = new Path();
-    private Canvas canvas;
+    private final Path polygon = new Path();
 
     private final static Paint xferPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final static Paint clearPaint = new Paint();
@@ -44,12 +41,12 @@ public class Asteroid extends GameObject {
     private boolean alive;
 
 
+    /**
+     * В конструкторе храним ссылку на StateManager
+     * После первого создания создаём Paint белого цвета
+     * При первом создании запускаем generate() - то есть генерируем сам астероид
+     * */
     public Asteroid() {
-        /**
-         * В конструкторе храним ссылку на StateManager
-         * После первого создания создаём Paint белого цвета
-         * При первом создании запускаем generate() - то есть генерируем сам астероид
-         * */
         if (firstLaunch) {
             xferPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
             clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -75,7 +72,7 @@ public class Asteroid extends GameObject {
         checkFlightOffTheScreen();
     }
 
-    /*
+    /**
      * Наконец, астероидам позволено самим себя рисовать! Теперь Добби свободен!
      * Собственно, сама перерисовка, создана для того чтобы астероиды не лагали, сделано с любовью и по правилам ООП
      * */
@@ -85,20 +82,20 @@ public class Asteroid extends GameObject {
     }
 
     private void generate() {
-        /**
-         * Логическая часть
-         * Геренрация всех точек и бла-бла
-         * */
+        /*
+          Логическая часть
+          Геренрация всех точек и бла-бла
+          */
         determineTheSizePositionAndAngles();
         createAngles();
         findTheCenter();
         moveAllPointsToTheCenter();
 
-        /**
-         * Графическая часть
-         * Использование сгенерированных данных для рисования своего скина (Астероида)
-         * Короче, изображение астероида bitmap создаётся тут
-         * */
+        /*
+          Графическая часть
+          Использование сгенерированных данных для рисования своего скина (Астероида)
+          Короче, изображение астероида bitmap создаётся тут
+          */
         generateBitmap();
     }
 
@@ -191,7 +188,7 @@ public class Asteroid extends GameObject {
 
     private void generateBitmap() {
         texture = Bitmap.createBitmap((int) (maxCornerRadius * 2f), (int) (maxCornerRadius * 2f), Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(texture);
+        final Canvas canvas = new Canvas(texture);
 
         polygon.reset();
         polygon.moveTo(cornersPoints[0].getX(), cornersPoints[0].getY());
@@ -204,18 +201,18 @@ public class Asteroid extends GameObject {
          * Делаем эффект фотошопа "обтравка по фигуре"
          * xFerPaint закэширован мною для оптимизации
          **/
-        Bitmap scaledDoge = null;
+        Bitmap scaledDoge;
         if (GameState.jokeDoge) {
             scaledDoge = Bitmap.createScaledBitmap(textures.get("doge"), (int) (maxCornerRadius * 2f), (int) (maxCornerRadius * 2f), true);
         } else {
-            final String textureName = String.format("%dx_corners_%d", cornersCount, RANDOM.nextInt(1));
+            final String textureName = cornersCount + "x_corners_" + RANDOM.nextInt(1);
             scaledDoge = Bitmap.createScaledBitmap(textures.get(textureName), (int) (maxCornerRadius * 2f), (int) (maxCornerRadius * 2f), true);
         }
         canvas.drawPath(polygon, paint);
         canvas.drawBitmap(scaledDoge, 0, 0, xferPaint);
     }
 
-    /*
+    /**
      * Обновление состояния, т.е. всё теперь сделано с отдделением Отображения от Логики
      * По непонятным причинам, без этого игра лагает.
      * UPD 23/02/2016: Лагает из-за небезопасной многопоточности. Теперь исправлено
@@ -242,7 +239,7 @@ public class Asteroid extends GameObject {
         return alive;
     }
 
-    private Paint redPaint = new Paint();
+    private final Paint redPaint = new Paint();
 
     private void drawDebug(Canvas canvas) {
         redPaint.setColor(Color.RED);
@@ -254,9 +251,8 @@ public class Asteroid extends GameObject {
         canvas.drawText("(" + center.getX() + ";" + center.getY() + ")", center.getX() + x, center.getY() + y - Camera.getInstance().getY(), redPaint);
     }
 
-    /*
+    /**
      * Имплементированные методы, которые могут понадобится в случае потребы в няшных эффектах частиц и взрывах
-     * Скорее всего, здесь есть что-то важное.
      * */
     public Vector3f[] getPoints() {
         return cornersPoints;
@@ -285,13 +281,5 @@ public class Asteroid extends GameObject {
 
     public float getY() {
         return y;
-    }
-
-    public void clash() {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setColor(Color.CYAN);
-        canvas.drawPath(polygon, paint);
     }
 }
